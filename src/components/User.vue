@@ -1,7 +1,7 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
-  <div class="flex justify-between">
-    <div class="profile-info text-center rounded-3xl shadow-md">
+  <div class="mycontainer flex justify-between">
+    <div class="profile-info rounded-3xl shadow-md">
       <div class="profile-picture">
       <img class ="rounded-full shadow-md" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" />
      
@@ -201,17 +201,57 @@
     
 }
 .restaurant-card img{
-  width: 20%;
+  width:20%;
   height:90%;
-
-  
-
   object-fit: cover;
 }
 .rating{
   padding-right:0;
  
   fill:aquamarine
+}
+/*-----------------------tablet-----------------------*/
+@media screen and (max-width:1200px){
+  .profile-info{
+    margin-left:3rem;
+    background:var(--color-white);
+    
+    width:17rem;
+    height:30rem;
+    
+    
+
+  }
+  .restaurant-card p{
+    display:none;
+  }
+  .rating{
+    width:50%;
+  }
+  
+  .profile-features{
+    width:45%;
+    
+
+  }
+}
+@media screen and (max-width: 790px) {
+  .profile-info{
+    margin-left:4rem;
+    background:var(--color-white);
+    
+    width:22rem;
+    height:30rem;
+    
+    
+
+  }
+  .mycontainer{flex-direction: column;}
+  .profile-features{
+    width:90%;
+    
+
+  } 
 }
 
 </style>
