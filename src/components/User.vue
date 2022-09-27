@@ -1,9 +1,9 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
-  <div class="container">
-    <div class="profile-info">
+  <div class="flex justify-between">
+    <div class="profile-info text-center rounded-3xl shadow-md">
       <div class="profile-picture">
-      <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" />
+      <img class ="rounded-full shadow-md" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" />
      
       </div>
    
@@ -24,8 +24,9 @@
        
       </svg>
       <div class="user-restaurant-list">
+        <p id="text">List of Restaurant</p>
         <div class="restaurant-card">
-          <img src="https://images.squarespace-cdn.com/content/v1/5b660dad96e76f2d14344d91/1533655767235-H2P2ZYTKD8Y3ECATBKGL/Executive-Chef-Renoir-Restaurant.jpg?format=750w">
+          <img class="rounded-xl" src="https://images.squarespace-cdn.com/content/v1/5b660dad96e76f2d14344d91/1533655767235-H2P2ZYTKD8Y3ECATBKGL/Executive-Chef-Renoir-Restaurant.jpg?format=750w">
           <a> Restaurant 1</a>
           <svg class="rating" viewBox="0 0 150 24" width="400">
             <path d="M 12 0C5.388 0 0 5.388 0 12s5.388 12 12 12 12-5.38 12-12c0-6.612-5.38-12-12-12z" transform="">
@@ -41,7 +42,7 @@
           <a class="restaurant-link">See more...</a>
         </div>
         <div class="restaurant-card">
-          <img src="https://images.squarespace-cdn.com/content/v1/5b660dad96e76f2d14344d91/1533655767235-H2P2ZYTKD8Y3ECATBKGL/Executive-Chef-Renoir-Restaurant.jpg?format=750w">
+          <img class="rounded-xl" src="https://images.squarespace-cdn.com/content/v1/5b660dad96e76f2d14344d91/1533655767235-H2P2ZYTKD8Y3ECATBKGL/Executive-Chef-Renoir-Restaurant.jpg?format=750w">
           <a> Restaurant 2</a>
           <svg class="rating" viewBox="0 0 150 24" width="400">
             <path d="M 12 0C5.388 0 0 5.388 0 12s5.388 12 12 12 12-5.38 12-12c0-6.612-5.38-12-12-12z" transform="">
@@ -91,18 +92,16 @@
 
     --box-shadow:0 2rem 3rem var(--color-light);
 }
-  .container{display:flex;
-    justify-content: space-between;
-  }
+
   .profile-info{
     margin-left:10rem;  
     background:var(--color-white);
     width:20rem;
     height:30rem;
-    border-radius: var(--card-border-radius);
+    
     padding: var(--card-padding);
-    text-align: center;
-    box-shadow: var(--box-shadow);
+    
+    
 
   }
   .profile-features{
@@ -112,25 +111,6 @@
     width:100%;
 
   }
-  .profile-picture {
-    margin-left:10rem;
-    position: block;
-    background:red;
-    margin: auto;
-    top: 40px;
-    right: 0;
-    left: 0;
-    width: 15vw;
-    border-radius: 50%;
-    /* background: white; */
-    overflow: hidden;
-  
-    }
-    .profile-picture img{
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
   .profile-name {
     display:flex;
     width:100%;
@@ -150,9 +130,17 @@
   }
   .restaurant-card a{
     width:100%;
+    
   }
   .restaurant-card p{
     width:100%;
+  }
+  .user-restaurant-list #text{
+    display:block;
+    text-align: left;
+    place-self: start;
+    font-weight: bolder;
+
   }
   .user-rate{
   width:100%;
@@ -185,10 +173,10 @@
 }
 .user-restaurant-list{
     background:var(--color-info-light);
-    height:16rem;
+    
     border-radius: var(--card-border-radius);
     padding: var(--card-padding);
-    text-align: center;
+    text-align: left;
     box-shadow: var(--box-shadow);
     display: flex;
     flex-direction: column;
@@ -201,20 +189,22 @@
   display:flex;
   background:var(--color-info-light);
     width:100%;
+    height:10rem;
     border-radius: var(--card-border-radius);
-    padding: var(--card-padding);
+  
     text-align: center;
     box-shadow: var(--box-shadow);
-    display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
-    overflow: hidden;
+    
     
 }
 .restaurant-card img{
   width: 20%;
-  border-radius: 50%;
+  height:90%;
+
+  
 
   object-fit: cover;
 }
