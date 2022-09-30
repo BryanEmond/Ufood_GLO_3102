@@ -1,7 +1,7 @@
 <template>
   <nav>
     <div
-      class="flex flex-row space-x-2 p-2 justify-between border-b-2 items-bottom basis-4"
+      class="flex flex-row space-x-2 p-2 justify-between border-b-2 items-center basis-4"
     >
       <div class="flex">
         <svg
@@ -34,12 +34,17 @@
       <div class="shrink-0 sm:grow">
         <search-bar></search-bar>
       </div>
+      <div class="flex">
+        <primary-button class="mr-2">Sign In</primary-button>
+        <primary-button fill>Sign Up</primary-button>
+      </div>
     </div>
   </nav>
 </template>
 
 <script>
 import SearchBar from "./SearchBar";
+import PrimaryButton from "../PrimaryButton";
 export default {
   name: "Navigation",
   data() {
@@ -49,6 +54,7 @@ export default {
   },
   components: {
     "search-bar": SearchBar,
+    "primary-button": PrimaryButton,
   },
 };
 </script>

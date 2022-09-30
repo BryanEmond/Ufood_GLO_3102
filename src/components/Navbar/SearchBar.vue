@@ -1,7 +1,7 @@
 <template>
   <div class="shrink-0">
     <input
-      placeholder="Search reastaurants, reviewers"
+      placeholder="Search restaurants, reviewers"
       type="search"
       class="rounded border-solid border-2 w-full placeholder:py-16 placeholder:p-2"
     />
