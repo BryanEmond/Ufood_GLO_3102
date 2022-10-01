@@ -106,7 +106,6 @@
   }
   .profile-features{
     
-    margin-right:5rem;
     margin-left:2rem;
     width:100%;
 
