@@ -14,7 +14,7 @@
         >
       </button>
     </div>
-    <div class="overflow-x-auto whitespace-nowrap example">
+    <div class="overflow-x-auto whitespace-nowrap overflowNavbar">
       <div v-for="cat in foodCategories" :key="cat.id" class="inline-flex">
         <primary-button class="m-2" v-bind:href="'#/' + cat.categorie">
           <router-link v-bind:to="'/' + cat.categorie">
@@ -62,10 +62,10 @@ export default {
 };
 </script>
 <style>
-.example {
+.overflowNavbar {
   scrollbar-width: none;
 }
-.example::-webkit-scrollbar {
+.overflowNavbar::-webkit-scrollbar {
   display: none;
 }
 </style>
