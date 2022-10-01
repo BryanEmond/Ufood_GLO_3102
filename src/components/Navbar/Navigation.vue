@@ -10,7 +10,7 @@
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          class="w-6 h-6"
+          class="w-6 h-6 sm:hidden"
         >
           <path
             stroke-linecap="round"
@@ -18,7 +18,7 @@
             d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
           />
         </svg>
-        <div class="w-24 h-4 shrink-0">
+        <div class="w-24 h-4 shrink-0 al">
           <router-link to="/">
             <img :src="ufoodSVG" />
           </router-link>
@@ -26,9 +26,8 @@
       </div>
 
       <div class="flex-row space-x-2 justify-evenly grow hidden sm:flex">
-        <router-link to="/">Home</router-link>
         <router-link to="/restaurant">Restaurant</router-link>
-        <router-link to="/user">User Profile</router-link>
+        <router-link to="/user">Profile</router-link>
       </div>
 
       <div class="shrink-0 sm:grow">
@@ -36,7 +35,7 @@
       </div>
       <div class="flex">
         <primary-button class="mr-2">Sign In</primary-button>
-        <primary-button fill>Sign Up</primary-button>
+        <primary-button fill class="hidden sm:block">Sign Up</primary-button>
       </div>
     </div>
   </nav>
