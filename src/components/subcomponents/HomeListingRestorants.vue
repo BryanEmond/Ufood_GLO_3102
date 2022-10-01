@@ -9,18 +9,18 @@
       <div class="float-right">
         <a href="#" class="mr-1">see all</a>
         <button
-          class="bg-gray-400 bg-gray-400 text-white font-bold py-1 px-3 rounded-full text-black mr-1"
+          class="bg-gray-400 text-white font-bold py-1 px-3 rounded-full text-black mr-1"
         >
           &lt;
         </button>
         <button
-          class="bg-gray-400 bg-gray-400 text-white font-bold py-1 px-3 rounded-full text-black"
+          class="bg-gray-400 text-white font-bold py-1 px-3 rounded-full text-black"
         >
           >
         </button>
       </div>
 
-      <div class="overflow-hidden whitespace-nowrap">
+      <div class="overflow-x-auto whitespace-nowrap example">
         <a
           v-for="restorant in item.restorant"
           :key="restorant.id"
@@ -37,7 +37,9 @@
             {{ restorant.title }}
           </h5>
           <div class="float-right inline">
-            <p class="font-normal text-gray-700 dark:text-gray-400 inline">{{restorant.rating}}</p>
+            <p class="font-normal text-gray-700 dark:text-gray-400 inline">
+              {{ restorant.rating }}
+            </p>
             <img
               src="https://cdn3.iconfinder.com/data/icons/sympletts-free-sampler/128/star-512.png"
               class="h-5 inline pb-1"
@@ -76,7 +78,7 @@ export default {
               distance: "500 metres",
               time: "10 min",
               deliveryFee: 5,
-              rating:5,
+              rating: 5,
               image:
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/McDonald%27s_logo.svg/220px-McDonald%27s_logo.svg.png",
             },
@@ -86,7 +88,7 @@ export default {
               distance: "350 metres",
               time: "8 min",
               deliveryFee: 3,
-              rating:4.5,
+              rating: 4.5,
               image:
                 "https://hillcrestmall.ca/wp-content/uploads/2021/09/67792b54112b993dc4579917d4f6b67310971243.png",
             },
@@ -96,7 +98,7 @@ export default {
               distance: "250 metres",
               time: "5 min",
               deliveryFee: 5,
-              rating:3,
+              rating: 3,
               image:
                 "https://mma.prnewswire.com/media/1638087/St_Hubert_Group_Ltd__Cora_and_St_Hubert_join_forces_.jpg?p=facebook",
             },
@@ -122,7 +124,7 @@ export default {
               distance: "500 metres",
               time: "10 min",
               deliveryFee: 5,
-              rating:5,
+              rating: 5,
               image:
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/McDonald%27s_logo.svg/220px-McDonald%27s_logo.svg.png",
             },
@@ -132,7 +134,7 @@ export default {
               distance: "350 metres",
               time: "8 min",
               deliveryFee: 3,
-              rating:4.5,
+              rating: 4.5,
               image:
                 "https://hillcrestmall.ca/wp-content/uploads/2021/09/67792b54112b993dc4579917d4f6b67310971243.png",
             },
@@ -142,7 +144,7 @@ export default {
               distance: "250 metres",
               time: "5 min",
               deliveryFee: 5,
-              rating:3,
+              rating: 3,
               image:
                 "https://mma.prnewswire.com/media/1638087/St_Hubert_Group_Ltd__Cora_and_St_Hubert_join_forces_.jpg?p=facebook",
             },
@@ -168,7 +170,7 @@ export default {
               distance: "500 metres",
               time: "10 min",
               deliveryFee: 5,
-              rating:5,
+              rating: 5,
               image:
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/McDonald%27s_logo.svg/220px-McDonald%27s_logo.svg.png",
             },
@@ -178,7 +180,7 @@ export default {
               distance: "350 metres",
               time: "8 min",
               deliveryFee: 3,
-              rating:4.5,
+              rating: 4.5,
               image:
                 "https://hillcrestmall.ca/wp-content/uploads/2021/09/67792b54112b993dc4579917d4f6b67310971243.png",
             },
@@ -188,7 +190,7 @@ export default {
               distance: "250 metres",
               time: "5 min",
               deliveryFee: 5,
-              rating:3,
+              rating: 3,
               image:
                 "https://mma.prnewswire.com/media/1638087/St_Hubert_Group_Ltd__Cora_and_St_Hubert_join_forces_.jpg?p=facebook",
             },
@@ -214,7 +216,7 @@ export default {
               distance: "500 metres",
               time: "10 min",
               deliveryFee: 5,
-              rating:5,
+              rating: 5,
               image:
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/McDonald%27s_logo.svg/220px-McDonald%27s_logo.svg.png",
             },
@@ -224,7 +226,7 @@ export default {
               distance: "350 metres",
               time: "8 min",
               deliveryFee: 3,
-              rating:4.5,
+              rating: 4.5,
               image:
                 "https://hillcrestmall.ca/wp-content/uploads/2021/09/67792b54112b993dc4579917d4f6b67310971243.png",
             },
@@ -234,7 +236,7 @@ export default {
               distance: "250 metres",
               time: "5 min",
               deliveryFee: 5,
-              rating:3,
+              rating: 3,
               image:
                 "https://mma.prnewswire.com/media/1638087/St_Hubert_Group_Ltd__Cora_and_St_Hubert_join_forces_.jpg?p=facebook",
             },
@@ -260,7 +262,7 @@ export default {
               distance: "500 metres",
               time: "10 min",
               deliveryFee: 5,
-              rating:5,
+              rating: 5,
               image:
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/McDonald%27s_logo.svg/220px-McDonald%27s_logo.svg.png",
             },
@@ -270,7 +272,7 @@ export default {
               distance: "350 metres",
               time: "8 min",
               deliveryFee: 3,
-              rating:4.5,
+              rating: 4.5,
               image:
                 "https://hillcrestmall.ca/wp-content/uploads/2021/09/67792b54112b993dc4579917d4f6b67310971243.png",
             },
@@ -280,7 +282,7 @@ export default {
               distance: "250 metres",
               time: "5 min",
               deliveryFee: 5,
-              rating:3,
+              rating: 3,
               image:
                 "https://mma.prnewswire.com/media/1638087/St_Hubert_Group_Ltd__Cora_and_St_Hubert_join_forces_.jpg?p=facebook",
             },
@@ -306,7 +308,7 @@ export default {
               distance: "500 metres",
               time: "10 min",
               deliveryFee: 5,
-              rating:5,
+              rating: 5,
               image:
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/McDonald%27s_logo.svg/220px-McDonald%27s_logo.svg.png",
             },
@@ -316,7 +318,7 @@ export default {
               distance: "350 metres",
               time: "8 min",
               deliveryFee: 3,
-              rating:4.5,
+              rating: 4.5,
               image:
                 "https://hillcrestmall.ca/wp-content/uploads/2021/09/67792b54112b993dc4579917d4f6b67310971243.png",
             },
@@ -326,7 +328,7 @@ export default {
               distance: "250 metres",
               time: "5 min",
               deliveryFee: 5,
-              rating:3,
+              rating: 3,
               image:
                 "https://mma.prnewswire.com/media/1638087/St_Hubert_Group_Ltd__Cora_and_St_Hubert_join_forces_.jpg?p=facebook",
             },
@@ -347,4 +349,9 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+.example{
+   scrollbar-width: none;
+}
+.example::-webkit-scrollbar {display: none;}
+</style>
