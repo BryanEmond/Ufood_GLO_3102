@@ -40,6 +40,7 @@
           <p class="w-full">(84 avis)</p>
           <router-link class="w-full hover:text-blue-800  " to="/restaurant">See more...</router-link>
         </div>
+        <router-link class="text-center mt-5 font-semibold underline text-blue-800 hover:text-black" to="/">Discover more restaurants...</router-link>
       </div>
         
     </div>
