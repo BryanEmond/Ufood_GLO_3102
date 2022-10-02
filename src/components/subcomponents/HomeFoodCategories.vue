@@ -1,19 +1,37 @@
 <template>
-  <div>
-    <div v-for="cat in foodCategories" :key="cat.id" class="inline-flex" >
-      <a
-        v-bind:href="'#/' + cat.categorie"
-        class="bg-blue-400 bg-blue-400 text-white font-bold py-2 px-2 rounded-full text-black mt-1 mr-1"
-        >{{ cat.categorie }}</a
+  <div class="mb-2">
+    <div class="float-left m-2" v-if="active">
+      <button
+        class="bg-gray-400 text-white font-bold py-1 px-3 rounded-full text-black mr-1"
       >
+        &lt;
+      </button>
+    </div>
+    <div class="float-right mt-2" v-if="!active">
+      <button
+        class="bg-gray-400 text-white font-bold py-1 px-3 rounded-full text-black"
+      >
+        >
+      </button>
+    </div>
+    <div class="overflow-x-auto whitespace-nowrap overflowNavbar">
+      <div v-for="cat in foodCategories" :key="cat.id" class="inline-flex">
+        <primary-button class="m-2" v-bind:href="'#/' + cat.categorie">
+          <router-link v-bind:to="'/' + cat.categorie">
+            {{ cat.categorie }}
+          </router-link>
+        </primary-button>
+      </div>
     </div>
   </div>
 </template>
 <script type="module">
+import PrimaryButton from "../PrimaryButton";
 export default {
   name: "Home",
   data() {
     return {
+      active: false,
       foodCategories: [
         { id: 0, categorie: "Fast Food" },
         { id: 1, categorie: "Poutine" },
@@ -38,6 +56,16 @@ export default {
       ],
     };
   },
+  components: {
+    "primary-button": PrimaryButton,
+  },
 };
 </script>
-<style></style>
+<style>
+.overflowNavbar {
+  scrollbar-width: none;
+}
+.overflowNavbar::-webkit-scrollbar {
+  display: none;
+}
+</style>

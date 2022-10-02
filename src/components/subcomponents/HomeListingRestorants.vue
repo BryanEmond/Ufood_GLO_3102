@@ -20,7 +20,7 @@
         </button>
       </div>
 
-      <div class="overflow-x-auto whitespace-nowrap example">
+      <div class="overflow-x-auto whitespace-nowrap overflowNavbar">
         <a
           v-for="restorant in item.restorant"
           :key="restorant.id"
@@ -350,8 +350,8 @@ export default {
 };
 </script>
 <style>
-.example{
+.overflowNavbar{
    scrollbar-width: none;
 }
-.example::-webkit-scrollbar {display: none;}
+.overflowNavbar::-webkit-scrollbar {display: none;}
 </style>
