@@ -58,6 +58,7 @@
 
 
 <script>
+import * as script from './restaurant.js'
 export default {
   data() {
     return {
