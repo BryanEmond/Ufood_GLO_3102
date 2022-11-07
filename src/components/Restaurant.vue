@@ -25,7 +25,16 @@
               </tr>
             </tbody>
           </table>
+          <div class="flex-col">
+            <div class="p-2 ml-20"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"> Book Now</button></div>
+            <div class="p-2 ml-20"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add favorite</button>
+            </div>
+            </div>
       </div>
+      
+    
+
+      
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 shadow-lg" >
