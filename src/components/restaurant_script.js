@@ -1,30 +1,42 @@
-const name = '5f31fc6555d7790550c08aff'
-function getInfo(){
-    const promise = new Promise((resolve,reject)=>{
-        const request = new XMLHttpRequest();
-        request.open('GET',`https://ufoodapi.herokuapp.com/unsecure/restaurants/${name}`);
-        request.send();
-       
 
-        request.onload = () =>{
-         
-            if(request.status === 200){
-
-               
-                resolve(request.response);
-            }else{
-                reject(request.statusText);
-            }
-        }
+async function getInfo(name){
+    const resp = await fetch(`https://ufoodapi.herokuapp.com/unsecure/restaurants/${name}`)
+   const data = await resp.json()
+   return data
+}
+async function addToList(listId, restaurantId){
+    const response = await fetch(`https://ufoodapi.herokuapp.com/unsecure/favorites/${listId}/restaurants`, {
+        method: 'POST',
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+        body: JSON.stringify({ id: restaurantId })
     });
-    promise.then((data) =>{ 
-    })
-    
-    return promise
-    
+    if (response.status != 200) {
+        console.log("Error while adding to list");
+        return;
+    }
+    console.log("restaurant added");
+    console.log(data);
+    return response.data;
 
+}
+async function removeFromList(listId,restaurantId){
+    const response = await fetch(`https://ufoodapi.herokuapp.com/unsecure/favorites/${listId}/restaurants/${restaurantId}`, {
+        method: 'DELETE',
+        headers: { "Content-type": "application/json; charset=UTF-8" }
+    });
+
+    if (response.status != 200) {
+        console.log("Error while removing from list");
+        return;
+    }
+    console.log("restaurant removed");
+    console.log(data);
+
+    return response.data;
 }
 
 module.exports={
-    getInfo
+    getInfo,
+    addToList,
+    removeFromList
 }

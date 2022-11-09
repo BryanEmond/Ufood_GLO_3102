@@ -27,7 +27,9 @@
           </table>
           <div class="flex-col">
             <div class="p-2 ml-20"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"> Book Now</button></div>
-            <div class="p-2 ml-20"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add favorite</button>
+            <div v-if="favorite" class="p-2 ml-20"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="addToList(listId, restaurantId)">Add favorite</button>
+            </div>
+            <div v-else class="p-2 ml-20"><button class="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="removeFromList(listId, restaurantId)">Remove favorite</button>
             </div>
             </div>
       </div>
@@ -39,7 +41,7 @@
 
   <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 shadow-lg" >
     <div class="flex map-responsive h-full object-cover rounded-xl border-2 border-gray-300">
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2727.92080033812!2d-71.21905764856824!3d46.8649309790401!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cb8bdb97e971d5d%3A0xa4e5a49ed3c5bda!2sQuesada%20Burritos%20%26%20Tacos!5e0!3m2!1sfr!2sca!4v1664390562984!5m2!1sfr!2sca" width="1200" height="1200" frameborder="0" style="border:0" allowfullscreen></iframe>
+      <iframe :src="this.maps" width="1200" height="1200" frameborder="0" style="border:0" allowfullscreen></iframe>
     </div>
     <div class="flex border-2 border-gray-300 rounded-xl p-6 object-cover" v-for="image in this.pictures" :key = "image">
       <img class="object-cover rounded-xl shadow-lg" :src="image">
@@ -70,6 +72,8 @@ import * as script from './restaurant_script.js'
 export default {
   data() {
     return {
+      maps : null,
+      favorite: 'true',
       opening_hours: {
                        
                       },
@@ -90,9 +94,19 @@ export default {
                   },
           }
       },
+      methods:{
+        addToList : async function(listId,restaurantId){
+          this.favorite = false
+          script.addToList(listId, restaurantId);
+        },
+        removeFromList : async function(listId,restaurantId){
+          this.favorite = true
+          script.removeFromList(listId, restaurantId);
+        }
+      },
       beforeCreate: async function(){
-            let data = await script.getInfo()
-            data = JSON.parse(data)
+        try{
+          let data = await script.getInfo('5f31fc6555d7790550c08aff')
             console.log(data)
             this.opening_hours = data.opening_hours
             this.pictures = data.pictures
@@ -104,6 +118,17 @@ export default {
             this.rating = data.rating
             this.genre = data.genre
             this.location = data.location
+            console.log(this.location.coordinates)
+            let lat = this.location.coordinates[0].toFixed(6);
+            let long = this.location.coordinates[1].toFixed(6);
+            const api = 'AIzaSyCEOTyfHf1Wdrbm2S78FIjd0-kNVv8KObU'
+            this.maps = `https://www.google.com/maps/embed/v1/place?key=${api}&q=${this.name}`
+            
+        }
+        catch(error){
+          console.log(error)
+        }
+        
            
       },
       computed: {
