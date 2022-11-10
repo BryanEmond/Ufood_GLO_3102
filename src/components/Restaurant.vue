@@ -9,7 +9,6 @@
           <div> &#9733; {{formattedRating}}</div>
           <div>$</div>
           <div><span v-for="g in genres" :key="g">{{g}}</span></div>
-          <div><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Get Directions</button></div>
           
         </div>
         <div class="flex justify-center">
@@ -29,7 +28,7 @@
             <div class="p-2 ml-20"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"> Book Now</button></div>
             <div v-if="favorite" class="p-2 ml-20"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="addToList(listId, restaurantId)">Add favorite</button>
             </div>
-            <div v-else class="p-2 ml-20"><button class="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="removeFromList(listId, restaurantId)">Remove favorite</button>
+            <div v-else class="p-2 ml-20"><button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" @click="removeFromList(listId, restaurantId)">Remove favorite</button>
             </div>
             </div>
       </div>
@@ -121,8 +120,13 @@ export default {
             console.log(this.location.coordinates)
             let lat = this.location.coordinates[0].toFixed(6);
             let long = this.location.coordinates[1].toFixed(6);
-            const api = 'AIzaSyCEOTyfHf1Wdrbm2S78FIjd0-kNVv8KObU'
-            this.maps = `https://www.google.com/maps/embed/v1/place?key=${api}&q=${this.name}`
+            const api = 'AIzaSyCIgcdo9AECx43Fx2O8uvBwaQ_vH61vTJk'
+
+            this.maps =`https://www.google.com/maps/embed/v1/place?key=${api}&q=place_id:${this.place_id}`
+
+            
+
+
             
         }
         catch(error){
