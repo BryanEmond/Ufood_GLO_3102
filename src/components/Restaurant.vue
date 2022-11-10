@@ -106,7 +106,13 @@ export default {
       beforeCreate: async function(){
         try{
           let data = await script.getInfo('5f31fc6555d7790550c08aff')
-            console.log(data)
+    
+            for(let i in data.opening_hours){
+              if(data.opening_hours[i] ==null){
+                data.opening_hours[i] = "closed"
+              }
+        
+            }
             this.opening_hours = data.opening_hours
             this.pictures = data.pictures
             this.name = data.name
@@ -117,23 +123,16 @@ export default {
             this.rating = data.rating
             this.genre = data.genre
             this.location = data.location
-            console.log(this.location.coordinates)
             let lat = this.location.coordinates[0].toFixed(6);
             let long = this.location.coordinates[1].toFixed(6);
             const api = 'AIzaSyCIgcdo9AECx43Fx2O8uvBwaQ_vH61vTJk'
 
-            this.maps =`https://www.google.com/maps/embed/v1/place?key=${api}&q=place_id:${this.place_id}`
-
-            
-
-
-            
+            this.maps =`https://www.google.com/maps/embed/v1/place?key=${api}&q=place_id:${this.place_id}`    
         }
         catch(error){
           console.log(error)
         }
-        
-           
+
       },
       computed: {
           formattedRating(){
