@@ -350,8 +350,10 @@ export default {
 };
 </script>
 <style>
-.overflowNavbar{
-   scrollbar-width: none;
+.overflowNavbar {
+  scrollbar-width: none;
 }
-.overflowNavbar::-webkit-scrollbar {display: none;}
+.overflowNavbar::-webkit-scrollbar {
+  display: none;
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <HomeFoodCategories/>
-    <HomeListing/>
+    <HomeFoodCategories />
+    <HomeListing />
   </div>
 </template>
 <script type="module">
@@ -10,8 +10,8 @@ import HomeListingComponent from "@/components/subcomponents/HomeListingRestoran
 export default {
   name: "app",
   components: {
-    "HomeFoodCategories":HomeFoodCategories ,
-    "HomeListing": HomeListingComponent,
+    HomeFoodCategories: HomeFoodCategories,
+    HomeListing: HomeListingComponent,
   },
 };
 </script>
