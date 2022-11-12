@@ -27,7 +27,6 @@
       </div>
 
       <div class="flex-row space-x-2 justify-evenly grow hidden sm:flex">
-        <router-link to="/restaurant">Restaurant</router-link>
         <router-link to="/user">Profile</router-link>
       </div>
 
