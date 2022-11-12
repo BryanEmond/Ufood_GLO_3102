@@ -119,7 +119,6 @@ export default {
   watch: {
     $route(to, from) {
       this.routeParams = to.query;
-      console.log(this.routeParams.id);
       if (this.routeParams.genres) {
         this.GetGenresRestaurants();
       } else {
