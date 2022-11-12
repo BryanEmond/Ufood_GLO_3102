@@ -50,7 +50,6 @@ export default {
       </div>
       <div class="flex flex-col space-y-5 justify-start grow pt-3">
         <div class="flex flex-col space-y-2">
-          <router-link to="/restaurant">Restaurant</router-link>
           <router-link to="/user">Profile</router-link>
         </div>
         <div class="flex flex-row justify-around">
