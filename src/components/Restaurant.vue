@@ -151,7 +151,7 @@ export default {
           data.opening_hours[i] = "closed";
         }
       }
-      this.tmpRestaurantId = "5f31fc6555d7790550c08aff";
+      this.tmpRestaurantId = this.id;
       this.opening_hours = data.opening_hours;
       this.pictures = data.pictures;
       this.name = data.name;
