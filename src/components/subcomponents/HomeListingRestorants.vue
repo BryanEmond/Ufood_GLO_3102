@@ -82,10 +82,10 @@ export default {
     calcDistance(restaurant) {
       let latRes = restaurant[1];
       let lonRes = restaurant[0];
-      let currentlat = 46.780655;
-      let currentlon = -71.297238;
-      // let currentlat = this.location.coords.latitude;
-      // let currentlon = this.location.coords.longitude;
+      // let currentlat = 46.780655;
+      // let currentlon = -71.297238;
+      let currentlat = this.location.coords.latitude;
+      let currentlon = this.location.coords.longitude;
 
       var R = 6371; // km
       var dLat = this.toRad(currentlat - latRes);
@@ -119,6 +119,7 @@ export default {
   watch: {
     $route(to, from) {
       this.routeParams = to.query;
+      console.log(this.routeParams.id)
       if (this.routeParams.genres) {
         this.GetGenresRestaurants();
       } else {
@@ -131,10 +132,10 @@ export default {
 <template>
   <div>
     <div v-if="this.routeParams.genres">
-      <a
+      <router-link
         v-for="restaurant in this.genresRestaurants"
         :key="restaurant.id"
-        href="#"
+        v-bind:to="'restaurant?id='+restaurant.id"
         class="inline-block w-96 p-3 m-3 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       >
         <div class="w-full flex justify-center">
@@ -168,7 +169,7 @@ export default {
             {{ "$".repeat(restaurant.price_range) }}
           </p>
         </div>
-      </a>
+      </router-link>
     </div>
     <div v-else>
       <div v-for="item in Object.keys(this.restaurants)" :key="item">
@@ -178,10 +179,10 @@ export default {
           {{ item }}
         </h5>
         <div class="overflow-x-auto whitespace-nowrap overflowNavbar">
-          <a
-            v-for="restaurant in this.restaurants[item]"
+          <router-link
+          v-for="restaurant in this.restaurants[item]"
             :key="restaurant.id"
-            href="#"
+            v-bind:to="'/restaurant?id='+restaurant.id"
             class="inline-block w-96 p-3 m-3 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
           >
             <div class="w-full flex justify-center">
@@ -216,6 +217,13 @@ export default {
                 {{ "$".repeat(restaurant.price_range) }}
               </p>
             </div>
+          </router-link>
+          <a
+            v-for="restaurant in this.restaurants[item]"
+            :key="restaurant.id"
+            href="#"
+            class="inline-block w-96 p-3 m-3 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+          >
           </a>
         </div>
       </div>
