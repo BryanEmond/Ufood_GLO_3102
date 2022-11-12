@@ -218,13 +218,6 @@ export default {
               </p>
             </div>
           </router-link>
-          <a
-            v-for="restaurant in this.restaurants[item]"
-            :key="restaurant.id"
-            href="#"
-            class="inline-block w-96 p-3 m-3 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
-          >
-          </a>
         </div>
       </div>
     </div>
