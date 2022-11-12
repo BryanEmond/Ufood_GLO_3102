@@ -29,19 +29,12 @@
           <div v-if="favorite" class="p-2 ml-20">
             <button
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              @click="addToList(listId, restaurantId)"
+              @click="this.openModal2"
             >
               Add favorite
             </button>
           </div>
-          <div v-else class="p-2 ml-20">
-            <button
-              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-              @click="removeFromList(listId, restaurantId)"
-            >
-              Remove favorite
-            </button>
-          </div>
+          
           <div class="p-2 ml-20">
             <button
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -80,6 +73,11 @@
       :closeCallback="closeModal"
       :restaurantId="this.tmpRestaurantId"
     ></VisitModalVue>
+    <AddFavModalVue
+      :open="isOpen2"
+      :closeCallback="closeModal"
+      :restaurantId="this.tmpRestaurantId"
+    ></AddFavModalVue>
   </div>
 </template>
 
@@ -100,6 +98,7 @@
 <script>
 import * as script from "./restaurant_script.js";
 import VisitModalVue from "./VisitModal.vue";
+import AddFavModalVue from "./AddFavModal.vue";
 export default {
   data() {
     return {
@@ -117,6 +116,7 @@ export default {
       location: {},
 
       isOpen: false,
+      isOpen2: false,
       tmpRestaurantId: "",
     };
   },
@@ -132,8 +132,12 @@ export default {
     openModal() {
       this.isOpen = true;
     },
+    openModal2() {
+      this.isOpen2 = true;
+    },
     closeModal() {
       this.isOpen = false;
+      this.isOpen2 = false;
     },
   },
   beforeCreate: async function () {
@@ -171,6 +175,8 @@ export default {
   },
   components: {
     VisitModalVue,
+    AddFavModalVue,
   },
+
 };
 </script>

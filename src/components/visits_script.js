@@ -17,7 +17,25 @@ async function getVisits() {
 
   return data;
 }
+async function getFav(){
+  const userId = "636969b87bed3d6cd9563f4d";
 
+  const response = await fetch(
+    `https://ufoodapi.herokuapp.com/unsecure/users/${userId}/favorites`,
+    {
+      method: "GET",
+      headers: { "Content-type": "application/json; charset=UTF-8" },
+    }
+  );
+  if (response.status != 200) {
+    console.log(`Error occured with code ${response.status}`);
+    return null;
+  }
+  const data = await response.json();
+
+  return data;
+
+}
 async function getOneVisit(visitId) {
   //must change for 3rd delivery, instead getLocalStorage
   const userId = "636969b87bed3d6cd9563f4d";
@@ -84,9 +102,29 @@ async function getRestaurantVisits(restaurantId) {
   return data;
 }
 
+async function addToList(listId, restaurantId) {
+  const response = await fetch(
+    `https://ufoodapi.herokuapp.com/unsecure/favorites/${listId}/restaurants`,
+    {
+      method: "POST",
+      headers: { "Content-type": "application/json; charset=UTF-8" },
+      body: JSON.stringify({ id: restaurantId }),
+    }
+  );
+  if (response.status != 200) {
+    console.log("Error while adding to list");
+    return;
+  }
+  console.log("restaurant added");
+  console.log(response);
+  return response.data;
+}
+
 module.exports = {
   getVisits,
   getOneVisit,
   postVisit,
   getOneVisit,
+  getFav,
+  addToList,
 };
