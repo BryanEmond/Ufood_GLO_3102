@@ -75,7 +75,7 @@
               @click="this.saveChanges"
               :disabled="disabled"
             >
-              Save changes
+              Leave a review
             </button>
           </div>
         </DialogPanel>
@@ -92,13 +92,12 @@ import "@vuepic/vue-datepicker/dist/main.css";
 import * as script from "./visits_script";
 
 export default {
-  name: "FavoriteListModal",
+  name: "VisitModal",
   props: {
     isOpen: Boolean,
     closeCallback: Function,
     restaurantId: String,
   },
-  data() {},
   setup() {
     const form = reactive({
       date: ref(""),
@@ -119,6 +118,7 @@ export default {
         this.form.rating,
         this.form.date
       );
+      console.log(data);
       this.closeCallback();
     },
   },

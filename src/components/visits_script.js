@@ -1,6 +1,6 @@
 async function getVisits() {
   //must change for 3rd delivery, instead getLocalStorage
-  const userId = "60765a3d505e68000443c7bb";
+  const userId = "636969b87bed3d6cd9563f4d";
 
   const response = await fetch(
     `https://ufoodapi.herokuapp.com/unsecure/users/${userId}/restaurants/visits`,
@@ -20,7 +20,7 @@ async function getVisits() {
 
 async function getOneVisit(visitId) {
   //must change for 3rd delivery, instead getLocalStorage
-  const userId = "60765a3d505e68000443c7bb";
+  const userId = "636969b87bed3d6cd9563f4d";
 
   const response = await fetch(
     `https://ufoodapi.herokuapp.com/unsecure/users/${userId}/restaurants/visits/${visitId}`,
@@ -40,7 +40,7 @@ async function getOneVisit(visitId) {
 
 async function postVisit(restaurantId, comment, rating, date) {
   //must change for 3rd delivery, instead getLocalStorage
-  const userId = "60765a3d505e68000443c7bb";
+  const userId = "636969b87bed3d6cd9563f4d";
 
   const response = await fetch(
     `https://ufoodapi.herokuapp.com/unsecure/users/${userId}/restaurants/visits`,
@@ -66,7 +66,7 @@ async function postVisit(restaurantId, comment, rating, date) {
 
 async function getRestaurantVisits(restaurantId) {
   //must change for 3rd delivery, instead getLocalStorage
-  const userId = "60765a3d505e68000443c7bb";
+  const userId = "636969b87bed3d6cd9563f4d";
 
   const response = await fetch(
     `https://ufoodapi.herokuapp.com/unsecure/users/${userId}/restaurants/${restaurantId}/visits`,
