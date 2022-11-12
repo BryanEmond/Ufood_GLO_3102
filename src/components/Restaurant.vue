@@ -101,6 +101,7 @@ import AddFavModalVue from "./AddFavModal.vue";
 export default {
   data() {
     return {
+      id: "5f31fc6555d7790550c08aff",
       maps: null,
       favorite: "true",
       opening_hours: {},
@@ -139,9 +140,12 @@ export default {
       this.isOpen2 = false;
     },
   },
-  beforeCreate: async function () {
+  mounted: async function () {
     try {
-      let data = await script.getInfo("5f31fc6555d7790550c08aff");
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      this.id = urlParams.get("id");
+      let data = await script.getInfo(this.id);
       for (let i in data.opening_hours) {
         if (data.opening_hours[i] == null) {
           data.opening_hours[i] = "closed";
