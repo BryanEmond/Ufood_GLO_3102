@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
   <Modal
     as="div"
@@ -23,7 +24,6 @@
                   >Add To Favorite
                 </DialogTitle>
                 <div class="mt-2">
-                 
                   <p class="text-sm text-gray-500 mb-1">
                     Select a List. Currently selected {{ form.rating }}.
                   </p>
@@ -31,11 +31,11 @@
                     v-model="form.rating"
                     class="mb-5 block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   >
-                    <option disabled value="" >Please select one</option>
-                    <option v-for="name in this.listNames"
-                    :key="name">{{name}}</option>
+                    <option disabled value="">Please select one</option>
+                    <option v-for="name in this.listNames" :key="name">
+                      {{ name }}
+                    </option>
                   </select>
-                 
                 </div>
               </div>
             </div>
@@ -80,21 +80,19 @@ export default {
   },
   data() {
     return {
-      listIds : [],
-      listNames : []
-    }},
-    beforeCreate: async function () {
-      let data = await script.getFav();
-      data = data.items;
-      for(let i in data){
-       
-        this.listIds.push(data[i].id)
-        this.listNames.push(data[i].name)
-      }
-      console.log(this.listNames)
-      
-    },
-    setup() {
+      listIds: [],
+      listNames: [],
+    };
+  },
+  beforeCreate: async function () {
+    let data = await script.getFav();
+    data = data.items;
+    for (let i in data) {
+      this.listIds.push(data[i].id);
+      this.listNames.push(data[i].name);
+    }
+  },
+  setup() {
     const form = reactive({
       date: ref(""),
       rating: ref(""),
@@ -103,10 +101,8 @@ export default {
     const disabled = computed(
       () => !form.rating || !form.date || !form.comment
     );
-    const disabled2 = computed(
-      () => !form.rating
-    );
-    return { form, disabled,disabled2 };
+    const disabled2 = computed(() => !form.rating);
+    return { form, disabled, disabled2 };
   },
   methods: {
     async saveChanges() {
@@ -121,11 +117,12 @@ export default {
       this.closeCallback();
     },
     async saveChanges2() {
-
-      let index = this.listNames.indexOf(this.form.rating)
+      let index = this.listNames.indexOf(this.form.rating);
       console.log("sending Favorite");
-      const data = await script.addToList(  
-        this.listIds[index],this.restaurantId);
+      const data = await script.addToList(
+        this.listIds[index],
+        this.restaurantId
+      );
       console.log(data);
       this.closeCallback();
     },

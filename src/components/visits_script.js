@@ -17,7 +17,7 @@ async function getVisits() {
 
   return data;
 }
-async function getFav(){
+async function getFav() {
   const userId = "636969b87bed3d6cd9563f4d";
 
   const response = await fetch(
@@ -34,7 +34,6 @@ async function getFav(){
   const data = await response.json();
 
   return data;
-
 }
 async function getOneVisit(visitId) {
   //must change for 3rd delivery, instead getLocalStorage

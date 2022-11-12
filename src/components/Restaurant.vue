@@ -34,7 +34,6 @@
               Add favorite
             </button>
           </div>
-          
           <div class="p-2 ml-20">
             <button
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -177,6 +176,5 @@ export default {
     VisitModalVue,
     AddFavModalVue,
   },
-
 };
 </script>
