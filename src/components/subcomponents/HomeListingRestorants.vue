@@ -119,7 +119,7 @@ export default {
   watch: {
     $route(to, from) {
       this.routeParams = to.query;
-      console.log(this.routeParams.id)
+      console.log(this.routeParams.id);
       if (this.routeParams.genres) {
         this.GetGenresRestaurants();
       } else {
@@ -135,7 +135,7 @@ export default {
       <router-link
         v-for="restaurant in this.genresRestaurants"
         :key="restaurant.id"
-        v-bind:to="'restaurant?id='+restaurant.id"
+        v-bind:to="'restaurant?id=' + restaurant.id"
         class="inline-block w-96 p-3 m-3 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       >
         <div class="w-full flex justify-center">
@@ -180,9 +180,9 @@ export default {
         </h5>
         <div class="overflow-x-auto whitespace-nowrap overflowNavbar">
           <router-link
-          v-for="restaurant in this.restaurants[item]"
+            v-for="restaurant in this.restaurants[item]"
             :key="restaurant.id"
-            v-bind:to="'/restaurant?id='+restaurant.id"
+            v-bind:to="'/restaurant?id=' + restaurant.id"
             class="inline-block w-96 p-3 m-3 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
           >
             <div class="w-full flex justify-center">
