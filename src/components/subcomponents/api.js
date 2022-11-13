@@ -7,11 +7,8 @@ export const fetchClosestRestaurants = async (position) => {
   //   `${URL}/unsecure/restaurants?lon=${-71.297516}&lat=${46.780953}`
   // );
   const fetchRestaurants = await fetch(
-    `${URL}/unsecure/restaurants?lon=${-71.228446}&lat=${46.834502}`
+    `${URL}/unsecure/restaurants?lon=${position.longitude}&lat=${position.latitude}`
   );
-  // const fetchRestaurants = await fetch(
-  //   `${URL}/unsecure/restaurants?lon=${position.longitude}&lat=${position.latitude}`
-  // );
   const json = await fetchRestaurants.json();
   return json.items;
 };
