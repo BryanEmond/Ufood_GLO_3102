@@ -47,9 +47,23 @@ export default {
       });
     },
     async GetGenresRestaurants() {
-      this.genresRestaurants = await fetchGenresRestaurants(
-        this.routeParams.genres
-      );
+      if (this.uid) {
+        this.genresRestaurants = await fetchGenresRestaurants(
+          this.routeParams.genres
+        );
+        this.listVisited = await fetchVisitedRestaurants(this.uid);
+        for (let visit of this.listVisited) {
+          for (let rest of this.genresRestaurants) {
+            if (rest.id === visit.restaurant_id) {
+              rest.visited = true;
+            }
+          }
+        }
+      } else {
+        this.genresRestaurants = await fetchGenresRestaurants(
+          this.routeParams.genres
+        );
+      }
     },
     async GetRestorants() {
       if (this.uid) {
@@ -167,44 +181,76 @@ export default {
 <template>
   <div>
     <div v-if="this.routeParams.genres">
-      <router-link
+      <div
         v-for="restaurant in this.genresRestaurants"
         :key="restaurant.id"
         v-bind:to="'restaurant?id=' + restaurant.id"
         class="inline-block w-96 p-3 m-3 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       >
-        <div class="w-full flex justify-center">
-          <img v-bind:src="restaurant.pictures[0]" class="h-48" />
-        </div>
+        <router-link v-bind:to="'restaurant?id=' + restaurant.id">
+          <div class="w-full flex justify-center">
+            <img v-bind:src="restaurant.pictures[0]" class="h-48" />
+          </div>
 
-        <h5
-          class="mb-2 text-l font-bold tracking-tight text-gray-900 dark:text-white inline"
-        >
-          {{ restaurant.name }}
-        </h5>
-        <div class="float-right inline">
-          <p class="font-normal text-gray-700 dark:text-gray-400 inline">
-            {{ restaurant.rating.toFixed(1) }}
-          </p>
-          <img
-            src="https://cdn3.iconfinder.com/data/icons/sympletts-free-sampler/128/star-512.png"
-            class="h-5 inline pb-1"
-          />
-        </div>
-
+          <h5
+            class="mb-2 text-l font-bold tracking-tight text-gray-900 dark:text-white inline"
+          >
+            {{ restaurant.name }}
+          </h5>
+          <div class="float-right inline">
+            <p class="font-normal text-gray-700 dark:text-gray-400 inline">
+              {{ restaurant.rating.toFixed(1) }}
+            </p>
+            <img
+              src="https://cdn3.iconfinder.com/data/icons/sympletts-free-sampler/128/star-512.png"
+              class="h-5 inline pb-1"
+            />
+          </div>
+        </router-link>
         <div>
-          <p class="font-normal text-gray-700 dark:text-gray-400 inline">
-            {{ calcDistance(restaurant.location.coordinates).toFixed(1) }}
-            km -
-          </p>
-          <p class="font-normal text-gray-700 dark:text-gray-400 inline mr-1">
-            {{ renderOpenOrClose(restaurant.opening_hours) }} -
-          </p>
-          <p class="font-normal text-gray-700 dark:text-gray-400 inline">
-            {{ "$".repeat(restaurant.price_range) }}
-          </p>
+          <router-link v-bind:to="'restaurant?id=' + restaurant.id">
+            <p class="font-normal text-gray-700 dark:text-gray-400 inline">
+              {{ calcDistance(restaurant.location.coordinates).toFixed(1) }}
+              km -
+            </p>
+            <p class="font-normal text-gray-700 dark:text-gray-400 inline mr-1">
+              {{ renderOpenOrClose(restaurant.opening_hours) }} -
+            </p>
+            <p class="font-normal text-gray-700 dark:text-gray-400 inline">
+              {{ "$".repeat(restaurant.price_range) }}
+            </p>
+          </router-link>
         </div>
-      </router-link>
+        <div v-if="this.uid">
+          <div
+            class="font-normal text-gray-700 dark:text-gray-400 inline float-right"
+            v-if="restaurant.visited"
+          >
+            <button
+              type="button"
+              class="px-2 rounded-2xl border-solid border-2 border-gray-300 text-black"
+              v-bind:class="['fill' ? 'bg-gray-300' : 'bg-white']"
+              disabled
+            >
+              Visited
+            </button>
+          </div>
+
+          <div
+            class="font-normal text-gray-700 dark:text-gray-400 inline float-right"
+            v-else
+          >
+            <button
+              type="button"
+              class="px-2 rounded-2xl border-solid border-2 border-sky-600 text-white"
+              v-bind:class="['fill' ? 'bg-sky-600' : 'bg-white']"
+              v-on:click="this.openModal(restaurant.id)"
+            >
+              Visited
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
     <div v-else>
       <div v-for="item in Object.keys(this.restaurants)" :key="item">
@@ -256,32 +302,34 @@ export default {
                   {{ "$".repeat(restaurant.price_range) }}
                 </p>
               </router-link>
-              <div
-                class="font-normal text-gray-700 dark:text-gray-400 inline float-right"
-                v-if="restaurant.visited"
-              >
-                <button
-                  type="button"
-                  class="px-2 rounded-2xl border-solid border-2 border-gray-300 text-black"
-                  v-bind:class="['fill' ? 'bg-gray-300' : 'bg-white']"
-                  disabled
+              <div v-if="this.uid">
+                <div
+                  class="font-normal text-gray-700 dark:text-gray-400 inline float-right"
+                  v-if="restaurant.visited"
                 >
-                  Visited
-                </button>
-              </div>
+                  <button
+                    type="button"
+                    class="px-2 rounded-2xl border-solid border-2 border-gray-300 text-black"
+                    v-bind:class="['fill' ? 'bg-gray-300' : 'bg-white']"
+                    disabled
+                  >
+                    Visited
+                  </button>
+                </div>
 
-              <div
-                class="font-normal text-gray-700 dark:text-gray-400 inline float-right"
-                v-else
-              >
-                <button
-                  type="button"
-                  class="px-2 rounded-2xl border-solid border-2 border-sky-600 text-white"
-                  v-bind:class="['fill' ? 'bg-sky-600' : 'bg-white']"
-                  v-on:click="this.openModal(restaurant.id)"
+                <div
+                  class="font-normal text-gray-700 dark:text-gray-400 inline float-right"
+                  v-else
                 >
-                  Visited
-                </button>
+                  <button
+                    type="button"
+                    class="px-2 rounded-2xl border-solid border-2 border-sky-600 text-white"
+                    v-bind:class="['fill' ? 'bg-sky-600' : 'bg-white']"
+                    v-on:click="this.openModal(restaurant.id)"
+                  >
+                    Visited
+                  </button>
+                </div>
               </div>
             </div>
           </div>
