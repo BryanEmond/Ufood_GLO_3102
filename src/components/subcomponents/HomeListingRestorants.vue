@@ -9,7 +9,6 @@ import {
 } from "./api";
 import "../../main.css";
 import VisitModal from "../VisitModal.vue";
-// import PrimaryButton from "../PrimaryButton";
 export default {
   data() {
     return {
@@ -161,7 +160,6 @@ export default {
   },
   components: {
     VisitModal,
-    // "primary-button": PrimaryButton,
   },
 };
 </script>
