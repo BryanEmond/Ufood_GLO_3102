@@ -19,13 +19,16 @@ export default {
       genresRestaurants: null,
       listVisited: null,
       isModalOpen: false,
+      selectedRestaurant: "",
     };
   },
   methods: {
-    openModal() {
+    openModal(id) {
+      this.selectedRestaurant = id;
       this.isModalOpen = true;
     },
     closeModal() {
+      this.GetRestorants();
       this.isModalOpen = false;
     },
     async GetLocation() {
@@ -61,17 +64,15 @@ export default {
           2
         );
         this.restaurants["Expensive"] = await fetchByRangePriceRestaurants(3);
-        Object.keys(this.restaurants).forEach((key) => {
-          this.restaurants[key].forEach((restaurant) => {
-            this.listVisited.forEach((visits) => {
-              if (restaurant.id == visits.restaurant_id) {
-                restaurant["visited"] = true;
-              } else {
-                restaurant["visited"] = false;
+        for (let visit of this.listVisited) {
+          Object.keys(this.restaurants).forEach((key) => {
+            for (let rest of this.restaurants[key]) {
+              if (rest.id === visit.restaurant_id) {
+                rest.visited = true;
               }
-            });
+            }
           });
-        });
+        }
       } else {
         this.restaurants["Closest to you"] = await fetchClosestRestaurants(
           this.location.coords
@@ -277,18 +278,21 @@ export default {
                   type="button"
                   class="px-2 rounded-2xl border-solid border-2 border-sky-600 text-white"
                   v-bind:class="['fill' ? 'bg-sky-600' : 'bg-white']"
-                  v-on:click="this.openModal"
+                  v-on:click="this.openModal(restaurant.id)"
                 >
                   Visited
                 </button>
               </div>
             </div>
           </div>
-          <!-- </router-link> -->
         </div>
       </div>
     </div>
-    <VisitModal :isOpen="this.isModalOpen" :closeCallback="this.closeModal" />
+    <VisitModal
+      :isOpen="this.isModalOpen"
+      :closeCallback="this.closeModal"
+      :restaurantId="this.selectedRestaurant"
+    />
   </div>
 </template>
 <style>
