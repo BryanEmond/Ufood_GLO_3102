@@ -5,20 +5,29 @@ import {
   fetchGenresRestaurants,
   fetchFavoriteRestaurants,
   fetchVisitsRestaurants,
+  fetchVisitedRestaurants,
 } from "./api";
 import "../../main.css";
-
+import VisitModal from "../VisitModal.vue";
 export default {
   data() {
     return {
       location: null,
       restaurants: {},
-      uid: null,
+      uid: "636969b87bed3d6cd9563f4d",
       routeParams: "",
       genresRestaurants: null,
+      listVisited: null,
+      isModalOpen: false,
     };
   },
   methods: {
+    openModal() {
+      this.isModalOpen = true;
+    },
+    closeModal() {
+      this.isModalOpen = false;
+    },
     async GetLocation() {
       return new Promise((resolve, rejects) => {
         if (!("geolocation" in navigator)) {
@@ -40,16 +49,39 @@ export default {
       );
     },
     async GetRestorants() {
-      this.restaurants["Closest to you"] = await fetchClosestRestaurants(
-        this.location.coords
-      );
       if (this.uid) {
+        this.restaurants["Closest to you"] = await fetchClosestRestaurants(
+          this.location.coords
+        );
+        this.listVisited = await fetchVisitedRestaurants(this.uid);
         this.restaurants["Favorite"] = await fetchFavoriteRestaurants(this.uid);
-        this.restaurants["Visite"] = await fetchVisitsRestaurants(this.uid);
+        this.restaurants["Visited"] = await fetchVisitsRestaurants(this.uid);
+        this.restaurants["Cheapest"] = await fetchByRangePriceRestaurants(1);
+        this.restaurants["Average Price"] = await fetchByRangePriceRestaurants(
+          2
+        );
+        this.restaurants["Expensive"] = await fetchByRangePriceRestaurants(3);
+        Object.keys(this.restaurants).forEach((key) => {
+          this.restaurants[key].forEach((restaurant) => {
+            this.listVisited.forEach((visits) => {
+              if (restaurant.id == visits.restaurant_id) {
+                restaurant["visited"] = true;
+              } else {
+                restaurant["visited"] = false;
+              }
+            });
+          });
+        });
+      } else {
+        this.restaurants["Closest to you"] = await fetchClosestRestaurants(
+          this.location.coords
+        );
+        this.restaurants["Cheapest"] = await fetchByRangePriceRestaurants(1);
+        this.restaurants["Average Price"] = await fetchByRangePriceRestaurants(
+          2
+        );
+        this.restaurants["Expensive"] = await fetchByRangePriceRestaurants(3);
       }
-      this.restaurants["Cheapest"] = await fetchByRangePriceRestaurants(1);
-      this.restaurants["Average Price"] = await fetchByRangePriceRestaurants(2);
-      this.restaurants["Expensive"] = await fetchByRangePriceRestaurants(3);
     },
     renderOpenOrClose(opening_hours) {
       let weekDay = [
@@ -126,6 +158,9 @@ export default {
       }
     },
   },
+  components: {
+    VisitModal,
+  },
 };
 </script>
 <template>
@@ -178,48 +213,82 @@ export default {
           {{ item }}
         </h5>
         <div class="overflow-x-auto whitespace-nowrap overflowNavbar">
-          <router-link
+          <div
             v-for="restaurant in this.restaurants[item]"
             :key="restaurant.id"
-            v-bind:to="'/restaurant?id=' + restaurant.id"
             class="inline-block w-96 p-3 m-3 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
           >
-            <div class="w-full flex justify-center">
-              <img v-bind:src="restaurant.pictures[0]" class="h-48" />
-            </div>
-            <h5
-              class="mb-2 text-l font-bold tracking-tight text-gray-900 dark:text-white inline"
-            >
-              {{ restaurant.name }}
-            </h5>
-            <div class="float-right inline">
-              <p class="font-normal text-gray-700 dark:text-gray-400 inline">
-                {{ restaurant.rating.toFixed(1) }}
-              </p>
-              <img
-                src="https://cdn3.iconfinder.com/data/icons/sympletts-free-sampler/128/star-512.png"
-                class="h-5 inline pb-1"
-              />
-            </div>
+            <router-link v-bind:to="'/restaurant?id=' + restaurant.id">
+              <div class="w-full flex justify-center">
+                <img v-bind:src="restaurant.pictures[0]" class="h-48" />
+              </div>
+            </router-link>
 
-            <div>
-              <p class="font-normal text-gray-700 dark:text-gray-400 inline">
-                {{ calcDistance(restaurant.location.coordinates).toFixed(1) }}
-                km -
-              </p>
-              <p
-                class="font-normal text-gray-700 dark:text-gray-400 inline mr-1"
+            <router-link v-bind:to="'/restaurant?id=' + restaurant.id">
+              <h5
+                class="mb-2 text-l font-bold tracking-tight text-gray-900 dark:text-white inline"
               >
-                {{ renderOpenOrClose(restaurant.opening_hours) }} -
-              </p>
-              <p class="font-normal text-gray-700 dark:text-gray-400 inline">
-                {{ "$".repeat(restaurant.price_range) }}
-              </p>
+                {{ restaurant.name }}
+              </h5>
+              <div class="float-right inline">
+                <p class="font-normal text-gray-700 dark:text-gray-400 inline">
+                  {{ restaurant.rating.toFixed(1) }}
+                </p>
+                <img
+                  src="https://cdn3.iconfinder.com/data/icons/sympletts-free-sampler/128/star-512.png"
+                  class="h-5 inline pb-1"
+                />
+              </div>
+            </router-link>
+            <div>
+              <router-link v-bind:to="'/restaurant?id=' + restaurant.id">
+                <p class="font-normal text-gray-700 dark:text-gray-400 inline">
+                  {{ calcDistance(restaurant.location.coordinates).toFixed(1) }}
+                  km -
+                </p>
+                <p
+                  class="font-normal text-gray-700 dark:text-gray-400 inline mr-1"
+                >
+                  {{ renderOpenOrClose(restaurant.opening_hours) }} -
+                </p>
+                <p class="font-normal text-gray-700 dark:text-gray-400 inline">
+                  {{ "$".repeat(restaurant.price_range) }}
+                </p>
+              </router-link>
+              <div
+                class="font-normal text-gray-700 dark:text-gray-400 inline float-right"
+                v-if="restaurant.visited"
+              >
+                <button
+                  type="button"
+                  class="px-2 rounded-2xl border-solid border-2 border-gray-300 text-black"
+                  v-bind:class="['fill' ? 'bg-gray-300' : 'bg-white']"
+                  disabled
+                >
+                  Visited
+                </button>
+              </div>
+
+              <div
+                class="font-normal text-gray-700 dark:text-gray-400 inline float-right"
+                v-else
+              >
+                <button
+                  type="button"
+                  class="px-2 rounded-2xl border-solid border-2 border-sky-600 text-white"
+                  v-bind:class="['fill' ? 'bg-sky-600' : 'bg-white']"
+                  v-on:click="this.openModal"
+                >
+                  Visited
+                </button>
+              </div>
             </div>
-          </router-link>
+          </div>
+          <!-- </router-link> -->
         </div>
       </div>
     </div>
+    <VisitModal :isOpen="this.isModalOpen" :closeCallback="this.closeModal" />
   </div>
 </template>
 <style>
