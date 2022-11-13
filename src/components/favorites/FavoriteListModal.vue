@@ -27,12 +27,10 @@
                     v-model="newListName"
                   />
                 </DialogTitle>
-                <div class="mt-2">
-                  <p class="text-sm text-gray-500">
-                    Are you sure you want to deactivate your account? All of
-                    your data will be permanently removed. This action cannot be
-                    undone.
-                  </p>
+                <div
+                  :key="restaurant.id"
+                  v-for="restaurant in list.restaurants">
+                  <FavoritesItem :id="restaurant.id" /> 
                 </div>
               </div>
             </div>
@@ -69,6 +67,7 @@
 
 <script>
 import { Dialog as Modal, DialogPanel, DialogTitle } from "@headlessui/vue";
+import { FavoritesItem } from "./FavoritesItem.vue";
 import { deleteList, renameList } from "../../api/favoritesAPI";
 import { DUMMY_USER_ID } from "../../api/endpoint";
 export default {
@@ -97,6 +96,7 @@ export default {
     Modal,
     DialogPanel,
     DialogTitle,
+    FavoritesItem,
   },
 };
 </script>
