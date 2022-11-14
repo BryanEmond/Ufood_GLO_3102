@@ -8,7 +8,7 @@
         />
       </div>
 
-      <div class="flex flex-col text-center h-40">
+      <div class="flex flex-col text-center h-45">
         <a class="mt-8 md:mt-12 font-bold">John Smith</a>
         <a class="mt-8 md:mt-12 font-bold">32 years</a>
         <a class="mt-8 md:mt-12 font-bold">University of Laval</a>
@@ -45,7 +45,7 @@
           Create new list
         </button>
       </div>
-      <div class="flex flex-row flex-wrap justify-between content-start">
+      <div class="flex flex-row flex-wrap content-start">
         <FavoritesList
           v-for="list in favorites"
           :key="list.id"

@@ -29,8 +29,9 @@
                 </DialogTitle>
                 <div
                   :key="restaurant.id"
-                  v-for="restaurant in list.restaurants">
-                  <FavoritesItem :id="restaurant.id" /> 
+                  v-for="restaurant of list.restaurants"
+                >
+                  <FavoritesItem :restoId="restaurant.id" :listId="list.id" />
                 </div>
               </div>
             </div>
@@ -67,8 +68,8 @@
 
 <script>
 import { Dialog as Modal, DialogPanel, DialogTitle } from "@headlessui/vue";
-import { FavoritesItem } from "./FavoritesItem.vue";
-import { deleteList, renameList } from "../../api/favoritesAPI";
+import FavoritesItem from "./FavoritesItem.vue";
+import { deleteList, renameList, removeFromList } from "../../api/favoritesAPI";
 import { DUMMY_USER_ID } from "../../api/endpoint";
 export default {
   name: "FavoriteListModal",
@@ -90,6 +91,11 @@ export default {
     async saveChanges() {
       await renameList(this.newListName, DUMMY_USER_ID, this.list.id);
       this.closeCallback();
+    },
+    async deleteFromList(restoId) {
+      var el = document.getElementById(restoId);
+      el.innerHTML = "";
+      await removeFromList(this.list.id, restoId);
     },
   },
   components: {

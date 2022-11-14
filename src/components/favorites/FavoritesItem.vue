@@ -1,39 +1,36 @@
 <template>
-  <div class="restaurant-card rounded-3xl shadow">
-    <img
-      class="rounded-xl object-cover w-1/5 h-5/6"
-      src="https://images.squarespace-cdn.com/content/v1/5b660dad96e76f2d14344d91/1533655767235-H2P2ZYTKD8Y3ECATBKGL/Executive-Chef-Renoir-Restaurant.jpg?format=750w"
-    />
-    <a class="w-full"> {{ restaurantData }} </a>
-    <a>&#9733; 4.5</a>
-    <p class="w-full">(84 avis)</p>
-    <router-link class="w-full hover:text-blue-800" to="/restaurant"
-      >See more...</router-link
-    >
+  <div :id="restoId" class="flex justify-between">
+    <router-link v-bind:to="'restaurant?id=' + restoId">
+      <p>{{ restaurantData.name }}</p>
+    </router-link>
+    <button @click="removeRestaurant" class="text-red-600">X</button>
   </div>
 </template>
 
 <script>
 import { getInfo } from "../restaurant_script";
+import { removeFromList } from "../../api/favoritesAPI";
 export default {
   name: "FavoritesItem",
   props: {
-    list: Object,
-    closeCallback: Function,
+    restoId: String,
+    listId: String,
   },
   data() {
     return {
       restaurantData: {},
     };
   },
-  async created() {
-    let data = await getInfo(this.id);
-    this.restaurantData = data.items;
-    },
+  beforeCreate: async function () {
+    let data = await getInfo(this.restoId);
+    this.restaurantData = data;
+    console.log(this.restaurantData.pictures[0]);
+  },
   methods: {
     async removeRestaurant() {
-      await removeFromList(this.list.id, this.id);
-      this.closeCallback();
+      var el = document.getElementById(this.restoId);
+      el.innerHTML = "";
+      await removeFromList(this.listId, this.restoId);
     },
   },
 };
