@@ -86,7 +86,7 @@
       :restaurantId="this.tmpRestaurantId"
     ></AddFavModalVue>
     <VisitModalViewVue
-      v-if="this.display"
+      :restaurantId="this.id"
       :open="isOpen3"
       :closeCallback="closeModal"
     >
@@ -137,6 +137,7 @@ export default {
       isOpen3: false,
       tmpRestaurantId: "",
       display: true,
+      selectedId: "",
     };
   },
   methods: {
@@ -191,11 +192,9 @@ export default {
 
       let listVisit = await getRestaurantVisits(this.id);
       listVisit = listVisit.items;
-      console.log(listVisit);
       if (Object.keys(listVisit).length === 0) {
         this.display = false;
       }
-      console.log(this.display);
       this.maps = `https://www.google.com/maps/embed/v1/place?key=${api}&q=place_id:${this.place_id}`;
     } catch (error) {
       console.log(error);

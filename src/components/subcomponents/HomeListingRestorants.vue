@@ -9,6 +9,7 @@ import {
 } from "./api";
 import "../../main.css";
 import VisitModal from "../VisitModal.vue";
+import VisitModalViewVue from "../VisitModalView.vue";
 export default {
   data() {
     return {
@@ -19,7 +20,9 @@ export default {
       genresRestaurants: null,
       listVisited: null,
       isModalOpen: false,
+      isModalVisitOpen: false,
       selectedRestaurant: "",
+      selectedRestaurantVisit: "",
     };
   },
   methods: {
@@ -29,7 +32,12 @@ export default {
     },
     closeModal() {
       this.GetRestorants();
+      this.isModalVisitOpen = false;
       this.isModalOpen = false;
+    },
+    openModalVisit(id) {
+      this.selectedRestaurantVisit = id;
+      this.isModalVisitOpen = true;
     },
     async GetLocation() {
       return new Promise((resolve, rejects) => {
@@ -175,6 +183,7 @@ export default {
   },
   components: {
     VisitModal,
+    VisitModalViewVue,
   },
 };
 </script>
@@ -230,7 +239,7 @@ export default {
               type="button"
               class="px-2 rounded-2xl border-solid border-2 border-gray-300 text-black"
               v-bind:class="['fill' ? 'bg-gray-300' : 'bg-white']"
-              disabled
+              v-on:click="() => this.openModalVisit(restaurant.id)"
             >
               Visited
             </button>
@@ -244,7 +253,7 @@ export default {
               type="button"
               class="px-2 rounded-2xl border-solid border-2 border-sky-600 text-white"
               v-bind:class="['fill' ? 'bg-sky-600' : 'bg-white']"
-              v-on:click="this.openModal(restaurant.id)"
+              v-on:click="() => this.openModal(restaurant.id)"
             >
               Visited
             </button>
@@ -311,7 +320,7 @@ export default {
                     type="button"
                     class="px-2 rounded-2xl border-solid border-2 border-gray-300 text-black"
                     v-bind:class="['fill' ? 'bg-gray-300' : 'bg-white']"
-                    disabled
+                    v-on:click="() => openModalVisit(restaurant.id)"
                   >
                     Visited
                   </button>
@@ -325,7 +334,7 @@ export default {
                     type="button"
                     class="px-2 rounded-2xl border-solid border-2 border-sky-600 text-white"
                     v-bind:class="['fill' ? 'bg-sky-600' : 'bg-white']"
-                    v-on:click="this.openModal(restaurant.id)"
+                    v-on:click="() => openModal(restaurant.id)"
                   >
                     Visited
                   </button>
@@ -335,12 +344,17 @@ export default {
           </div>
         </div>
       </div>
+      <VisitModalViewVue
+        :isOpen="this.isModalVisitOpen"
+        :closeCallback="closeModal"
+        :restaurantId="this.selectedRestaurantVisit"
+      />
+      <VisitModal
+        :isOpen="this.isModalOpen"
+        :closeCallback="closeModal"
+        :restaurantId="this.selectedRestaurant"
+      />
     </div>
-    <VisitModal
-      :isOpen="this.isModalOpen"
-      :closeCallback="this.closeModal"
-      :restaurantId="this.selectedRestaurant"
-    />
   </div>
 </template>
 <style>
