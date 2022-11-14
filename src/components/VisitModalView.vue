@@ -6,7 +6,6 @@
     :open="isOpen"
   >
     <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-
     <div class="fixed inset-0 z-10 overflow-y-auto">
       <div
         class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
@@ -69,23 +68,46 @@ export default {
   props: {
     isOpen: Boolean,
     closeCallback: Function,
+    restaurantId: String,
   },
   data() {
     return {
       listVisits: [],
-      restaurantId: "",
     };
   },
-  mounted: async function () {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    this.restaurantId = urlParams.get("id");
-    let data = await getRestaurantVisits(this.restaurantId);
-    data = data.items;
-    data.slice(data.length - 1, data.length);
-    for (let i = data.length - 3; i < data.length; i++) {
-      this.listVisits.push(data[i]);
+  async mounted() {
+    if (this.restaurantId) {
+      this.listVisits = [];
+      this.getData();
     }
+  },
+  watch: {
+    restaurantId: function (newVal, oldVal) {
+      this.listVisits = [];
+      this.getData();
+    },
+  },
+  methods: {
+    async getData() {
+      let data = await getRestaurantVisits(this.restaurantId);
+      data = data.items;
+      // if (data.length <= 3) {
+      //   this.listVisits = data;
+      // } else {
+      //   data.slice(-3);
+      // }
+      // console.log(data);
+      this.listVisits = data;
+
+      // if (data.length <= 3) {
+      //   this.listVisits = data;
+      // } else {
+      //   for (let i = data.length - 3; i < data.length; i++) {
+      //     console.log(i);
+      //     this.listVisits.push(data[-i]);
+      //   }
+      // }
+    },
   },
   components: {
     Modal,
