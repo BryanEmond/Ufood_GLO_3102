@@ -187,7 +187,7 @@ export default {
       this.location = data.location;
       let lat = this.location.coordinates[0].toFixed(6);
       let long = this.location.coordinates[1].toFixed(6);
-      const api = "AIzaSyCIgcdo9AECx43Fx2O8uvBwaQ_vH61vTJk";
+      const api = "AIzaSyALLxzCl392yKm0znSBrut-kg8N6zT0T30";
 
       let listVisit = await getRestaurantVisits(this.id);
       listVisit = listVisit.items;
