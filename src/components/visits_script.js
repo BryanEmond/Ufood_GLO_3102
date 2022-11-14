@@ -126,4 +126,5 @@ module.exports = {
   getOneVisit,
   getFav,
   addToList,
+  getRestaurantVisits,
 };
