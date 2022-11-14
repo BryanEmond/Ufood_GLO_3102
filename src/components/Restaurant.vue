@@ -42,6 +42,14 @@
               Write a review
             </button>
           </div>
+          <div v-if="this.display" class="p-2 ml-20">
+            <button
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              @click="this.openModal3"
+            >
+              View visit informations
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -77,6 +85,12 @@
       :closeCallback="closeModal"
       :restaurantId="this.tmpRestaurantId"
     ></AddFavModalVue>
+    <VisitModalViewVue
+      v-if="this.display"
+      :open="isOpen3"
+      :closeCallback="closeModal"
+    >
+    </VisitModalViewVue>
   </div>
 </template>
 
@@ -87,6 +101,7 @@
   position: relative;
   height: 0;
 }
+
 .map-responsive iframe {
   left: 0;
   top: 0;
@@ -96,8 +111,10 @@
 
 <script>
 import * as script from "./restaurant_script.js";
+import { getRestaurantVisits } from "./visits_script.js";
 import VisitModalVue from "./VisitModal.vue";
 import AddFavModalVue from "./AddFavModal.vue";
+import VisitModalViewVue from "./VisitModalView.vue";
 export default {
   data() {
     return {
@@ -117,7 +134,9 @@ export default {
 
       isOpen: false,
       isOpen2: false,
+      isOpen3: false,
       tmpRestaurantId: "",
+      display: true,
     };
   },
   methods: {
@@ -135,9 +154,13 @@ export default {
     openModal2() {
       this.isOpen2 = true;
     },
+    openModal3() {
+      this.isOpen3 = true;
+    },
     closeModal() {
       this.isOpen = false;
       this.isOpen2 = false;
+      this.isOpen3 = false;
     },
   },
   mounted: async function () {
@@ -166,6 +189,13 @@ export default {
       let long = this.location.coordinates[1].toFixed(6);
       const api = "AIzaSyCIgcdo9AECx43Fx2O8uvBwaQ_vH61vTJk";
 
+      let listVisit = await getRestaurantVisits(this.id);
+      listVisit = listVisit.items;
+      console.log(listVisit);
+      if (Object.keys(listVisit).length === 0) {
+        this.display = false;
+      }
+      console.log(this.display);
       this.maps = `https://www.google.com/maps/embed/v1/place?key=${api}&q=place_id:${this.place_id}`;
     } catch (error) {
       console.log(error);
@@ -179,6 +209,7 @@ export default {
   components: {
     VisitModalVue,
     AddFavModalVue,
+    VisitModalViewVue,
   },
 };
 </script>
