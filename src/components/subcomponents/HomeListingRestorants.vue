@@ -308,7 +308,17 @@ export default {
                   {{ renderOpenOrClose(restaurant.opening_hours) }} -
                 </p>
                 <p class="font-normal text-gray-700 dark:text-gray-400 inline">
-                  {{ "$".repeat(restaurant.price_range) }}
+                  {{ "$".repeat(restaurant.price_range) }} -
+                </p>
+                <p
+                  class="font-normal text-gray-700 dark:text-gray-400 inline"
+                  v-for="i in restaurant.genres.length"
+                  :key="i"
+                >
+                  {{
+                    restaurant.genres[i - 1] +
+                    (i < restaurant.genres.length ? ", " : "")
+                  }}
                 </p>
               </router-link>
               <div v-if="this.uid">
