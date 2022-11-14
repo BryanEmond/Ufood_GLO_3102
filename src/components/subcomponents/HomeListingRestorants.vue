@@ -51,14 +51,6 @@ export default {
         this.genresRestaurants = await fetchGenresRestaurants(
           this.routeParams.genres
         );
-        this.listVisited = await fetchVisitedRestaurants(this.uid);
-        for (let visit of this.listVisited) {
-          for (let rest of this.genresRestaurants) {
-            if (rest.id === visit.restaurant_id) {
-              rest.visited = true;
-            }
-          }
-        }
       } else {
         this.genresRestaurants = await fetchGenresRestaurants(
           this.routeParams.genres
@@ -78,15 +70,6 @@ export default {
           2
         );
         this.restaurants["Expensive"] = await fetchByRangePriceRestaurants(3);
-        for (let visit of this.listVisited) {
-          Object.keys(this.restaurants).forEach((key) => {
-            for (let rest of this.restaurants[key]) {
-              if (rest.id === visit.restaurant_id) {
-                rest.visited = true;
-              }
-            }
-          });
-        }
       } else {
         this.restaurants["Closest to you"] = await fetchClosestRestaurants(
           this.location.coords
@@ -224,21 +207,6 @@ export default {
         <div v-if="this.uid">
           <div
             class="font-normal text-gray-700 dark:text-gray-400 inline float-right"
-            v-if="restaurant.visited"
-          >
-            <button
-              type="button"
-              class="px-2 rounded-2xl border-solid border-2 border-gray-300 text-black"
-              v-bind:class="['fill' ? 'bg-gray-300' : 'bg-white']"
-              disabled
-            >
-              Visited
-            </button>
-          </div>
-
-          <div
-            class="font-normal text-gray-700 dark:text-gray-400 inline float-right"
-            v-else
           >
             <button
               type="button"
@@ -305,21 +273,6 @@ export default {
               <div v-if="this.uid">
                 <div
                   class="font-normal text-gray-700 dark:text-gray-400 inline float-right"
-                  v-if="restaurant.visited"
-                >
-                  <button
-                    type="button"
-                    class="px-2 rounded-2xl border-solid border-2 border-gray-300 text-black"
-                    v-bind:class="['fill' ? 'bg-gray-300' : 'bg-white']"
-                    disabled
-                  >
-                    Visited
-                  </button>
-                </div>
-
-                <div
-                  class="font-normal text-gray-700 dark:text-gray-400 inline float-right"
-                  v-else
                 >
                   <button
                     type="button"
