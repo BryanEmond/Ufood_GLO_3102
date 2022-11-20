@@ -10,9 +10,9 @@
           <h1
             class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
           >
-            Create and account
+            Login to your account
           </h1>
-          <form class="space-y-4 md:space-y-6" action="#">
+          <form class="space-y-4 md:space-y-6" @submit.prevent="loginUser()">
             <div>
               <label
                 for="email"
@@ -20,6 +20,7 @@
                 >Your email</label
               >
               <input
+                v-model="this.email"
                 type="email"
                 name="email"
                 id="email"
@@ -35,6 +36,7 @@
                 >Password</label
               >
               <input
+                v-model="this.password"
                 type="password"
                 name="password"
                 id="password"
@@ -66,6 +68,25 @@
   </section>
 </template>
 
-<script></script>
+<script>
+import * as script from "../api/login.js";
+export default {
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  methods: {
+    async loginUser() {
+      console.log("creating user");
+      const req = await script.loginUser(this.email, this.password);
+      console.log(req);
+      localStorage.uId = req.id;
+      console.log(localStorage.uId);
+    },
+  },
+};
+</script>
 
 <style></style>
