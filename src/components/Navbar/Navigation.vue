@@ -86,16 +86,11 @@ export default {
   beforeMount: function () {
     this.token = !(Cookies.get("token") == undefined);
     this.userId = Cookies.get("userId");
-    console.log(this.token);
-    console.log(`found this id: ${this.userId}`);
   },
   watch: {
     async $route(to, from) {
-      console.log("route changed");
-      console.log(Cookies.get("token"));
       this.token = await this.checkCookie(Cookies.get("token"));
       this.userId = Cookies.get("userId");
-      console.log(this.token);
     },
   },
   methods: {
