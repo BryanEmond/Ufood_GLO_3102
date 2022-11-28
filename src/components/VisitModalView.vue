@@ -61,7 +61,7 @@
 
 <script>
 import { Dialog as Modal, DialogPanel, DialogTitle } from "@headlessui/vue";
-import { getRestaurantVisits } from "./visits_script";
+import { getRestaurantVisits } from "../api/visitsAPI";
 
 export default {
   name: "VisitModalView",

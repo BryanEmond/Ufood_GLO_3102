@@ -85,7 +85,6 @@ export const addToList = async (listId, restaurantId) => {
     return;
   }
   console.log("restaurant added");
-  console.log(data);
   return response.data;
 };
 
@@ -103,7 +102,6 @@ export const removeFromList = async (listId, restaurantId) => {
     return;
   }
   console.log("restaurant removed");
-  console.log(data);
 
   return response.data;
 };

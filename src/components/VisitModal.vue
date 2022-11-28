@@ -89,7 +89,7 @@ import { Dialog as Modal, DialogPanel, DialogTitle } from "@headlessui/vue";
 import { ref, reactive, computed } from "vue";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import * as script from "./visits_script";
+import * as script from "../api/visitsAPI";
 
 export default {
   name: "VisitModal",

@@ -1,4 +1,4 @@
-import { getInfo } from "../restaurant_script";
+import { getInfo } from "./restaurantsAPI";
 
 const URL = "https://ufoodapi.herokuapp.com";
 

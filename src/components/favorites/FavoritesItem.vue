@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { getInfo } from "../restaurant_script";
+import { getInfo } from "../../api/restaurantsAPI";
 import { removeFromList } from "../../api/favoritesAPI";
 import VisitModalViewVue from "../VisitModalView.vue";
 export default {
