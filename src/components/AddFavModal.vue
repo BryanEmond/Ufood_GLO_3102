@@ -69,7 +69,9 @@ import { Dialog as Modal, DialogPanel, DialogTitle } from "@headlessui/vue";
 import { ref, reactive, computed } from "vue";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import * as script from "./visits_script";
+import * as script from "../api/visitsAPI";
+import { getListsFromUser, addToList } from "../api/favoritesAPI";
+import { DUMMY_USER_ID } from "../api/endpoint";
 
 export default {
   name: "VisitModal",
@@ -85,8 +87,8 @@ export default {
     };
   },
   beforeCreate: async function () {
-    let data = await script.getFav();
-    data = data.items;
+    let data = await getListsFromUser(DUMMY_USER_ID);
+
     for (let i in data) {
       this.listIds.push(data[i].id);
       this.listNames.push(data[i].name);
@@ -107,23 +109,18 @@ export default {
   methods: {
     async saveChanges() {
       console.log("sending review");
-      const data = await script.postVisit(
+      await script.postVisit(
         this.restaurantId,
         this.form.comment,
         this.form.rating,
         this.form.date
       );
-      console.log(data);
       this.closeCallback();
     },
     async saveChanges2() {
       let index = this.listNames.indexOf(this.form.rating);
       console.log("sending Favorite");
-      const data = await script.addToList(
-        this.listIds[index],
-        this.restaurantId
-      );
-      console.log(data);
+      await addToList(this.listIds[index], this.restaurantId);
       this.closeCallback();
     },
   },

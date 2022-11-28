@@ -110,8 +110,9 @@
 </style>
 
 <script>
-import * as script from "./restaurant_script.js";
-import { getRestaurantVisits } from "./visits_script.js";
+import { getInfo } from "../api/restaurantsAPI.js";
+import * as favoritesAPi from "../api/favoritesAPI.js";
+import { getRestaurantVisits } from "../api/visitsAPI.js";
 import VisitModalVue from "./VisitModal.vue";
 import AddFavModalVue from "./AddFavModal.vue";
 import VisitModalViewVue from "./VisitModalView.vue";
@@ -143,11 +144,11 @@ export default {
   methods: {
     addToList: async function (listId, restaurantId) {
       this.favorite = false;
-      script.addToList(listId, restaurantId);
+      favoritesAPi.addToList(listId, restaurantId);
     },
     removeFromList: async function (listId, restaurantId) {
       this.favorite = true;
-      script.removeFromList(listId, restaurantId);
+      favoritesAPi.removeFromList(listId, restaurantId);
     },
     openModal() {
       this.isOpen = true;
@@ -169,7 +170,7 @@ export default {
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
       this.id = urlParams.get("id");
-      let data = await script.getInfo(this.id);
+      let data = await getInfo(this.id);
       for (let i in data.opening_hours) {
         if (data.opening_hours[i] == null) {
           data.opening_hours[i] = "closed";

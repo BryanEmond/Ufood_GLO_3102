@@ -6,7 +6,7 @@ import {
   fetchFavoriteRestaurants,
   fetchVisitsRestaurants,
   fetchVisitedRestaurants,
-} from "./api";
+} from "../../api/api";
 import "../../main.css";
 import VisitModal from "../VisitModal.vue";
 import VisitModalViewVue from "../VisitModalView.vue";
