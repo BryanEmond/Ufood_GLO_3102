@@ -40,7 +40,7 @@ export default {
       this.isModalVisitOpen = true;
     },
     async GetLocation() {
-      return new Promise((resolve, rejects) => {
+      return new Promise((resolve, reject) => {
         if (!("geolocation" in navigator)) {
           reject(new Error("Geolocation is not available."));
         }
