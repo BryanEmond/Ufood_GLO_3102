@@ -15,6 +15,7 @@
       :open="isOpen"
       :list="list"
       :closeCallback="closeModal"
+      :isConnectedUser="isConnectedUser"
     ></FavoriteListModal>
   </div>
 </template>
@@ -32,16 +33,15 @@ export default {
   props: {
     list: Object,
     listUpdated: Function,
+    isConnectedUser: Boolean,
   },
   methods: {
     openModal() {
       this.isOpen = open;
-      console.log("open modal");
     },
 
     closeModal() {
       this.isOpen = false;
-      console.log("close modal");
       this.listUpdated();
     },
   },

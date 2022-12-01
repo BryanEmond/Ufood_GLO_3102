@@ -27,7 +27,7 @@
       </div>
 
       <div class="flex-row space-x-2 justify-evenly grow hidden sm:flex">
-        <router-link to="/user">Profile</router-link>
+        <router-link to="/user/636969b87bed3d6cd9563f4d">Profile</router-link>
       </div>
 
       <div class="shrink-0 sm:grow">

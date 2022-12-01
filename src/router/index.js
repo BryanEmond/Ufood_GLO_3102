@@ -15,9 +15,10 @@ const routes = [
     component: Restaurant,
   },
   {
-    path: "/user",
+    path: "/user/:userId",
     name: "User",
     component: User,
+    props: true,
   },
 ];
 
