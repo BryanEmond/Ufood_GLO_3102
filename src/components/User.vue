@@ -27,8 +27,10 @@
           81%
         </text>
       </svg>
-      <div class="text-2xl font-bold pt-8">My lists</div>
-      <div class="flex-row mt-4">
+      <div class="text-2xl font-bold pt-8">
+        {{ this.isConnectedUser ? "My lists" : "Their lists" }}
+      </div>
+      <div v-if="isConnectedUser" class="flex-row mt-4">
         <input
           :bind="newListName"
           v-model="newListName"
@@ -51,6 +53,7 @@
           :key="list.id"
           :list="list"
           :listUpdated="fetchLists"
+          :isConnectedUser="isConnectedUser"
         ></FavoritesList>
       </div>
     </div>
@@ -58,11 +61,7 @@
 </template>
 
 <script>
-import {
-  getAllFavorites,
-  createList,
-  getListsFromUser,
-} from "../api/favoritesAPI";
+import { createList, getListsFromUser } from "../api/favoritesAPI";
 import FavoritesList from "./favorites/FavoritesList.vue";
 import { DUMMY_USER_ID } from "../api/endpoint";
 
@@ -72,17 +71,25 @@ export default {
       favorites: [],
     };
   },
+  computed: {
+    isConnectedUser() {
+      return this.userId === DUMMY_USER_ID; //TODO : compare with the real user id obtained from the API
+    },
+  },
+  props: {
+    userId: String,
+  },
   methods: {
     async createList() {
       await createList(this.newListName, "equipe8@email.com");
       this.fetchLists();
     },
     async fetchLists() {
-      this.favorites = await getListsFromUser(DUMMY_USER_ID);
+      this.favorites = await getListsFromUser(this.userId);
     },
   },
   async beforeCreate() {
-    this.favorites = await getListsFromUser(DUMMY_USER_ID);
+    this.favorites = await getListsFromUser(this.userId);
   },
   components: { FavoritesList },
 };
