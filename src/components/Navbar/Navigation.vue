@@ -94,7 +94,7 @@ export default {
   },
   methods: {
     async logout() {
-      await login.logout();
+      await login.logout(Cookies.get("token"));
       this.token = false;
       this.$router.push("/");
     },

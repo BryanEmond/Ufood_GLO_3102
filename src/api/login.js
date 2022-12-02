@@ -2,13 +2,10 @@ import Cookies from "js-cookie";
 import { ENDPOINT } from "./endpoint";
 export const logout = async (token) => {
   const tokenInfo = await getTokenInfo(token);
+  console.log(tokenInfo);
   try {
     const response = await fetch(`${ENDPOINT}/logout`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: `email=${tokenInfo.email}&name=${tokenInfo.name}&token=${token}&id=${tokenInfo.id}`,
     });
     Cookies.remove("token");
     return response;
@@ -39,25 +36,26 @@ export const loginUser = async (email, password) => {
   return json;
 };
 export const getTokenInfo = async (token) => {
+  console.log(token);
   try {
-    const response = await fetch(`${ENDPOINT}/signup`, {
+    const response = await fetch(`${ENDPOINT}/tokenInfo`, {
       method: "GET",
       headers: {
-        authorization: value,
+        Authorization: token,
       },
     });
     const json = await response.json();
     return json;
   } catch (e) {
-    return e;
+    console.log(e);
   }
 };
 export const checktoken = async (value) => {
   try {
-    const response = await fetch(`${ENDPOINT}/signup`, {
+    const response = await fetch(`${ENDPOINT}/tokenInfo`, {
       method: "GET",
       headers: {
-        authorization: value,
+        Authorization: value,
       },
     });
     return true;
