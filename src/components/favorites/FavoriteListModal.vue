@@ -25,6 +25,7 @@
                     class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     placeholder="Example label"
                     v-model="newListName"
+                    :disabled="!this.isConnectedUser"
                   />
                 </DialogTitle>
                 <div
@@ -36,7 +37,10 @@
               </div>
             </div>
           </div>
-          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+          <div
+            class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"
+            v-if="this.isConnectedUser"
+          >
             <button
               type="button"
               class="inline-flex w-full justify-center rounded-md border border-transparent bg-sky-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
@@ -60,6 +64,19 @@
               Delete list
             </button>
           </div>
+          <div
+            class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"
+            v-if="!this.isConnectedUser"
+          >
+            <button
+              type="button"
+              class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+              @click="closeCallback"
+              ref="cancelButtonRef"
+            >
+              Close
+            </button>
+          </div>
         </DialogPanel>
       </div>
     </div>
@@ -77,6 +94,7 @@ export default {
     list: Object,
     isOpen: Boolean,
     closeCallback: Function,
+    isConnectedUser: Boolean,
   },
   data() {
     return {

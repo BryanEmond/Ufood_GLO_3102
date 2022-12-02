@@ -15,9 +15,20 @@ const routes = [
     component: Restaurant,
   },
   {
-    path: "/user",
+    path: "/user/:userId",
     name: "User",
     component: User,
+    props: true,
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("@/components/Login"),
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: () => import("@/components/Register"),
   },
 ];
 
