@@ -85,6 +85,7 @@
 
 <script>
 import * as script from "../api/login.js";
+import Cookies from "js-cookie";
 export default {
   data() {
     return {
@@ -97,10 +98,19 @@ export default {
     async createUser() {
       console.log("creating user");
       console.log(this.name);
-      const req = await script.createUser(this.name, this.email, this.password);
-      console.log(req);
-      localStorage.uId = req.id;
-      console.log(localStorage.uId);
+      try {
+        const req = await script.createUser(
+          this.name,
+          this.email,
+          this.password
+        );
+        console.log(req);
+        Cookies.set("token", req.token);
+        console.log(Cookies.get("token"));
+        this.$router.push("/");
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };

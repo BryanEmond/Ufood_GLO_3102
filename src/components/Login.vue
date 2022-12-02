@@ -70,6 +70,7 @@
 
 <script>
 import * as script from "../api/login.js";
+import Cookies from "js-cookie";
 export default {
   data() {
     return {
@@ -82,8 +83,9 @@ export default {
       console.log("creating user");
       const req = await script.loginUser(this.email, this.password);
       console.log(req);
-      localStorage.uId = req.id;
-      console.log(localStorage.uId);
+      Cookies.set("token", req.token);
+      console.log(Cookies.get("token"));
+      this.$router.push("/");
     },
   },
 };
