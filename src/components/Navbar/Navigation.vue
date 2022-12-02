@@ -45,10 +45,10 @@
           Log out</primary-button
         >
         <router-link v-if="!this.token" to="/register">
-          <primary-button class="mr-2 hidden sm:block">Sign In</primary-button>
+          <primary-button class="mr-2 hidden sm:block">Sign Up</primary-button>
         </router-link>
         <router-link v-if="!this.token" to="/login">
-          <primary-button fill class="hidden sm:block">Sign Up</primary-button>
+          <primary-button fill class="hidden sm:block">Sign In</primary-button>
         </router-link>
       </div>
     </div>
