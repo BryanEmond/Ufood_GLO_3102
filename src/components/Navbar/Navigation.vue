@@ -84,12 +84,10 @@ export default {
   },
   beforeMount: function () {
     this.token = !(Cookies.get("token") == undefined);
-    console.log(this.token);
   },
   watch: {
     async $route(to, from) {
       this.token = await this.checkCookie(Cookies.get("token"));
-      console.log(this.token);
     },
   },
   methods: {
@@ -109,9 +107,7 @@ export default {
       this.hamburgerIsDisplay = value;
       return;
     },
-    displayHamburgerMenu: function () {
-      console.log(HamburgerMenu.data().isDisplay);
-    },
+    displayHamburgerMenu: function () {},
   },
 };
 </script>

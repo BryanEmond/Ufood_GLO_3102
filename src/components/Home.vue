@@ -1,11 +1,13 @@
 <template>
   <div>
     <HomeFoodCategories />
+    <MapWierdCategories v-if="mapView" />
     <VueToggle
       title="map"
       name="mapToggle"
       class="px-2 py-1"
       activeColor="#0284C7"
+      darkTheme
       fontSize="14px"
       @toggle="switchView"
     />
@@ -16,7 +18,8 @@
 <script type="module">
 import HomeFoodCategories from "@/components/subcomponents/HomeFoodCategories";
 import HomeListingComponent from "@/components/subcomponents/HomeListingRestorants";
-import HomeMapListingVue from "@/components/subcomponents/HomeMapListing.vue";
+import HomeMapListing from "@/components/subcomponents/HomeMapListing.vue";
+import MapWierdCategories from "./subcomponents/MapWierdCategories.vue";
 import VueToggle from "vue-toggle-component";
 
 export default {
@@ -24,8 +27,9 @@ export default {
   components: {
     HomeFoodCategories: HomeFoodCategories,
     HomeListing: HomeListingComponent,
-    HomeMapListing: HomeMapListingVue,
+    HomeMapListing: HomeMapListing,
     VueToggle,
+    MapWierdCategories,
   },
   data() {
     return {
