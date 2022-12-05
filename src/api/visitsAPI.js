@@ -1,4 +1,5 @@
 import { ENDPOINT_UNSECURE } from "./endpoint";
+import Cookies from "js-cookie";
 
 export const getVisits = async () => {
   //must change for 3rd delivery, instead getLocalStorage

@@ -10,7 +10,9 @@
         <div>&#9733; {{ formattedRating }}</div>
         <div>{{ "$".repeat(this.price_range) }}</div>
         <div>
-          <span v-for="g in genres" :key="g">{{ g }}</span>
+          <span v-for="g in genres" :key="g"
+            ><p>{{ g }}</p></span
+          >
         </div>
       </div>
       <div class="flex justify-center">
@@ -75,9 +77,68 @@
         <img class="object-cover rounded-xl shadow-lg" :src="image" />
       </div>
       <span></span>
-      <div
-        class="mt-5 mb-5 bg-white shadow-md p-5 rounded-xl grid grid-cols-1 m:grid-cols-2 lg:grid-cols-2 border-2 border-gray-300"
-      ></div>
+
+      <div>
+        <h1 class="text-xl md:text-2xl font-bold ml-5">You may also like:</h1>
+        <div v-if="this.genres" class="whitespace-nowrap">
+          <div
+            v-for="restaurant in this.suggestedRestaurants"
+            :key="restaurant.id"
+            v-bind:to="'restaurant?id=' + restaurant.id"
+            class="inline-block w-96 p-3 m-3 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+          >
+            <router-link v-bind:to="'restaurant?id=' + restaurant.id">
+              <div class="w-full flex justify-center">
+                <img v-bind:src="restaurant.pictures[0]" class="h-48" />
+              </div>
+
+              <h5
+                class="mb-2 text-l font-bold tracking-tight text-gray-900 dark:text-white inline"
+              >
+                {{ restaurant.name }}
+              </h5>
+              <div class="float-right inline">
+                <p class="font-normal text-gray-700 dark:text-gray-400 inline">
+                  {{ restaurant.rating.toFixed(1) }}
+                </p>
+                <img
+                  src="https://cdn3.iconfinder.com/data/icons/sympletts-free-sampler/128/star-512.png"
+                  class="h-5 inline pb-1"
+                />
+              </div>
+            </router-link>
+            <div v-if="this.userId">
+              <div
+                class="font-normal text-gray-700 dark:text-gray-400 inline float-right"
+                v-if="restaurant.visited"
+              >
+                <button
+                  type="button"
+                  class="px-2 rounded-2xl border-solid border-2 border-gray-300 text-black"
+                  v-bind:class="['fill' ? 'bg-gray-300' : 'bg-white']"
+                  v-on:click="() => this.openModalVisit(restaurant.id)"
+                >
+                  Visited
+                </button>
+              </div>
+
+              <div
+                class="font-normal text-gray-700 dark:text-gray-400 inline float-right"
+                v-else
+              >
+                <button
+                  type="button"
+                  class="px-2 rounded-2xl border-solid border-2 border-sky-600 text-white"
+                  v-bind:class="['fill' ? 'bg-sky-600' : 'bg-white']"
+                  v-on:click="() => this.openModal(restaurant.id)"
+                >
+                  Visited
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <VisitModalVue
       :open="isOpen"
@@ -115,15 +176,18 @@
 
 <script>
 import { getInfo } from "../api/restaurantsAPI.js";
-import * as favoritesAPi from "../api/favoritesAPI.js";
+import * as favoritesAPI from "../api/favoritesAPI.js";
 import { getRestaurantVisits } from "../api/visitsAPI.js";
+import { fetchGenresRestaurants, fetchVisitedRestaurants } from "../api/api";
 import VisitModalVue from "./VisitModal.vue";
 import AddFavModalVue from "./AddFavModal.vue";
+import Cookies from "js-cookie";
 import VisitModalViewVue from "./VisitModalView.vue";
 export default {
   data() {
     return {
       id: "5f31fc6555d7790550c08aff",
+      userId: Cookies.get("userId"),
       maps: null,
       favorite: "true",
       opening_hours: {},
@@ -137,6 +201,8 @@ export default {
       genres: [],
       location: {},
 
+      suggestedRestaurants: null,
+
       isOpen: false,
       isOpen2: false,
       isOpen3: false,
@@ -148,11 +214,11 @@ export default {
   methods: {
     addToList: async function (listId, restaurantId) {
       this.favorite = false;
-      favoritesAPi.addToList(listId, restaurantId);
+      favoritesAPI.addToList(listId, restaurantId);
     },
     removeFromList: async function (listId, restaurantId) {
       this.favorite = true;
-      favoritesAPi.removeFromList(listId, restaurantId);
+      favoritesAPI.removeFromList(listId, restaurantId);
     },
     openModal() {
       this.isOpen = true;
@@ -167,6 +233,20 @@ export default {
       this.isOpen = false;
       this.isOpen2 = false;
       this.isOpen3 = false;
+    },
+    async GetGenresRestaurants() {
+      this.suggestedRestaurants = await fetchGenresRestaurants(this.genres[0]);
+      this.listVisited = await fetchVisitedRestaurants(Cookies.get("userId"));
+      for (let visit of this.listVisited) {
+        for (let rest of this.suggestedRestaurants) {
+          if (rest.id === visit.restaurant_id) {
+            rest.visited = true;
+          }
+          if (rest.name === this.name) {
+            this.suggestedRestaurants.pop();
+          }
+        }
+      }
     },
   },
   mounted: async function () {
@@ -189,11 +269,13 @@ export default {
       this.address = data.address;
       this.price_range = data.price_range;
       this.rating = data.rating;
-      this.genre = data.genre;
+      this.genres = data.genres;
       this.location = data.location;
       let lat = this.location.coordinates[0].toFixed(6);
       let long = this.location.coordinates[1].toFixed(6);
       const api = "AIzaSyALLxzCl392yKm0znSBrut-kg8N6zT0T30";
+      await this.GetGenresRestaurants();
+      console.log(this.suggestedRestaurants);
 
       let listVisit = await getRestaurantVisits(this.id);
       listVisit = listVisit.items;

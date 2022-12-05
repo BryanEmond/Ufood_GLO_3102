@@ -1,5 +1,4 @@
 import { getInfo } from "./restaurantsAPI";
-
 import { ENDPOINT_UNSECURE } from "./endpoint";
 
 export const fetchClosestRestaurants = async (position) => {

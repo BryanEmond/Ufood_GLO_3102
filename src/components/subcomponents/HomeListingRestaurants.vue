@@ -10,12 +10,13 @@ import {
 import "../../main.css";
 import VisitModal from "../VisitModal.vue";
 import VisitModalViewVue from "../VisitModalView.vue";
+import Cookies from "js-cookie";
 export default {
   data() {
     return {
       location: null,
       restaurants: {},
-      uid: "636969b87bed3d6cd9563f4d",
+      uid: Cookies.get("userId"),
       routeParams: "",
       genresRestaurants: null,
       listVisited: null,
