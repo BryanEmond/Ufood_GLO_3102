@@ -87,7 +87,7 @@
 import { Dialog as Modal, DialogPanel, DialogTitle } from "@headlessui/vue";
 import FavoritesItem from "./FavoritesItem.vue";
 import { deleteList, renameList, removeFromList } from "../../api/favoritesAPI";
-import { DUMMY_USER_ID } from "../../api/endpoint";
+import Cookies from "js-cookie";
 export default {
   name: "FavoriteListModal",
   props: {
@@ -107,7 +107,7 @@ export default {
       this.closeCallback();
     },
     async saveChanges() {
-      await renameList(this.newListName, DUMMY_USER_ID, this.list.id);
+      await renameList(this.newListName, Cookies.get("userId"), this.list.id);
       this.closeCallback();
     },
     async deleteFromList(restoId) {

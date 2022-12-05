@@ -2,7 +2,7 @@ import { ENDPOINT_UNSECURE } from "./endpoint";
 
 export const getVisits = async () => {
   //must change for 3rd delivery, instead getLocalStorage
-  const userId = "636969b87bed3d6cd9563f4d";
+  const userId = Cookies.get("userId");
 
   const response = await fetch(
     `${ENDPOINT_UNSECURE}/users/${userId}/restaurants/visits`,
@@ -22,7 +22,7 @@ export const getVisits = async () => {
 
 export const getOneVisit = async (visitId) => {
   //must change for 3rd delivery, instead getLocalStorage
-  const userId = "636969b87bed3d6cd9563f4d";
+  const userId = Cookies.get("userId");
 
   const response = await fetch(
     `${ENDPOINT_UNSECURE}/users/${userId}/restaurants/visits/${visitId}`,
@@ -42,7 +42,7 @@ export const getOneVisit = async (visitId) => {
 
 export const postVisit = async (restaurantId, comment, rating, date) => {
   //must change for 3rd delivery, instead getLocalStorage
-  const userId = "636969b87bed3d6cd9563f4d";
+  const userId = Cookies.get("userId");
 
   const response = await fetch(
     `${ENDPOINT_UNSECURE}/users/${userId}/restaurants/visits`,
@@ -68,7 +68,7 @@ export const postVisit = async (restaurantId, comment, rating, date) => {
 
 export const getRestaurantVisits = async (restaurantId) => {
   //must change for 3rd delivery, instead getLocalStorage
-  const userId = "636969b87bed3d6cd9563f4d";
+  const userId = Cookies.get("userId");
 
   const response = await fetch(
     `${ENDPOINT_UNSECURE}/users/${userId}/restaurants/${restaurantId}/visits`,

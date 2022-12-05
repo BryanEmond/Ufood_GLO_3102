@@ -9,9 +9,9 @@
       </div>
 
       <div class="flex flex-col text-center h-45">
-        <a class="mt-8 md:mt-12 font-bold">John Smith</a>
-        <a class="mt-8 md:mt-12 font-bold">32 years</a>
-        <a class="mt-8 md:mt-12 font-bold">University of Laval</a>
+        <a class="mt-8 md:mt-12 font-bold">{{ this.username }}</a>
+        <a class="mt-8 md:mt-12 font-bold">{{ this.email }}</a>
+        <!-- <a class="mt-8 md:mt-12 font-bold">University of Laval</a> -->
       </div>
     </div>
     <div class="ml-8 w-11/12">
@@ -63,17 +63,22 @@
 <script>
 import { createList, getListsFromUser } from "../api/favoritesAPI";
 import FavoritesList from "./favorites/FavoritesList.vue";
-import { DUMMY_USER_ID } from "../api/endpoint";
+import { getTokenInfo } from "../api/login";
+import Cookies from "js-cookie";
 
 export default {
   data() {
     return {
       favorites: [],
+      username: "",
+      email: "",
+      userIdcheck: "",
     };
   },
   computed: {
     isConnectedUser() {
-      return this.userId === DUMMY_USER_ID; //TODO : compare with the real user id obtained from the API
+      console.log(`${this.userId} === ${this.userIdcheck}`);
+      return this.userId === this.userIdcheck; //TODO : compare with the real user id obtained from the API
     },
   },
   props: {
@@ -87,9 +92,23 @@ export default {
     async fetchLists() {
       this.favorites = await getListsFromUser(this.userId);
     },
+    async loadInfos() {
+      this.userIdcheck = await Cookies.get("userId");
+      const data = await getTokenInfo(Cookies.get("token"));
+      this.username = data.name;
+      this.email = data.email;
+      console.log(
+        `computed data:\nuserId: ${this.userIdcheck}\nusername: ${this.username}\nemail: ${this.email}`
+      );
+    },
   },
   async beforeCreate() {
+    console.log(`userId: ${this.userId}`);
     this.favorites = await getListsFromUser(this.userId);
+    await this.loadInfos();
+    /* this.userId = await getUserId();
+    console.log(`data:`);
+    console.log(data); */
   },
   components: { FavoritesList },
 };

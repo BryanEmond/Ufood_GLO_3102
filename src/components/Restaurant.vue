@@ -74,6 +74,10 @@
       >
         <img class="object-cover rounded-xl shadow-lg" :src="image" />
       </div>
+      <span></span>
+      <div
+        class="mt-5 mb-5 bg-white shadow-md p-5 rounded-xl grid grid-cols-1 m:grid-cols-2 lg:grid-cols-2 border-2 border-gray-300"
+      ></div>
     </div>
     <VisitModalVue
       :open="isOpen"

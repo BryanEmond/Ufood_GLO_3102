@@ -6,7 +6,7 @@
 </template>
 <script type="module">
 import HomeFoodCategories from "@/components/subcomponents/HomeFoodCategories";
-import HomeListingComponent from "@/components/subcomponents/HomeListingRestorants";
+import HomeListingComponent from "@/components/subcomponents/HomeListingRestaurants";
 export default {
   name: "app",
   components: {
