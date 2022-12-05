@@ -10,6 +10,8 @@ import {
 import "../../main.css";
 import VisitModal from "../VisitModal.vue";
 import VisitModalViewVue from "../VisitModalView.vue";
+import Cookies from "js-cookie";
+import { checktoken, getTokenInfo } from "../../api/login";
 export default {
   data() {
     return {
@@ -40,7 +42,7 @@ export default {
       this.isModalVisitOpen = true;
     },
     async GetLocation() {
-      return new Promise((resolve, rejects) => {
+      return new Promise((resolve, reject) => {
         if (!("geolocation" in navigator)) {
           reject(new Error("Geolocation is not available."));
         }
@@ -165,6 +167,9 @@ export default {
   async mounted() {
     this.routeParams = this.$route.query;
     this.location = await this.GetLocation();
+    if (checktoken(Cookies.get("token"))) {
+      getTokenInfo(Cookies.get("token"));
+    }
     if (this.routeParams.genres) {
       this.GetGenresRestaurants();
     } else {
