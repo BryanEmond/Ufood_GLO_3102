@@ -30,7 +30,7 @@
         v-if="this.token"
         class="flex-row space-x-2 justify-evenly grow hidden sm:flex"
       >
-        <router-link to="/user/636969b87bed3d6cd9563f4d">Profile</router-link>
+        <router-link :to="'/user/' + this.userId">Profile</router-link>
       </div>
 
       <div class="shrink-0 sm:grow">
@@ -75,6 +75,7 @@ export default {
       hamburgerIsDisplay: true,
       ufoodSVG: require("../../assets/UFood.svg"),
       token: false,
+      userId: "",
     };
   },
   components: {
@@ -84,7 +85,9 @@ export default {
   },
   beforeMount: function () {
     this.token = !(Cookies.get("token") == undefined);
+    this.userId = Cookies.get("userId");
     console.log(this.token);
+    console.log(`found this id: ${this.userId}`);
   },
   watch: {
     async $route(to, from) {
