@@ -63,13 +63,14 @@
 <script>
 import { createList, getListsFromUser } from "../api/favoritesAPI";
 import FavoritesList from "./favorites/FavoritesList.vue";
-import { getTokenInfo } from "../api/login";
+import { getTokenInfo, getUserInfos } from "../api/login";
 import Cookies from "js-cookie";
 
 export default {
   data() {
     return {
       favorites: [],
+      datas: [],
       username: "",
       email: "",
       userIdcheck: "",
@@ -94,9 +95,10 @@ export default {
     },
     async loadInfos() {
       this.userIdcheck = await Cookies.get("userId");
-      const data = await getTokenInfo(Cookies.get("token"));
-      this.username = data.name;
-      this.email = data.email;
+      let datas = await getUserInfos(this.userId);
+      console.log(datas);
+      this.username = datas.name;
+      this.email = datas.email;
       console.log(
         `computed data:\nuserId: ${this.userIdcheck}\nusername: ${this.username}\nemail: ${this.email}`
       );

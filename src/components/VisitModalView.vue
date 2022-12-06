@@ -3,7 +3,7 @@
     as="div"
     class="relative z-10"
     @close="this.closeCallback"
-    :open="isOpen"
+    :open="this.open"
   >
     <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
     <div class="fixed inset-0 z-10 overflow-y-auto">
@@ -66,7 +66,7 @@ import { getRestaurantVisits } from "../api/visitsAPI";
 export default {
   name: "VisitModalView",
   props: {
-    isOpen: Boolean,
+    open: Boolean,
     closeCallback: Function,
     restaurantId: String,
   },
@@ -75,19 +75,27 @@ export default {
       listVisits: [],
     };
   },
-  async mounted() {
+  mounted() {
     if (this.restaurantId) {
       this.listVisits = [];
       this.getData();
     }
   },
   watch: {
+    open: function (newVal, oldVal) {
+      this.listVisits = [];
+      this.getData();
+    },
     restaurantId: function (newVal, oldVal) {
       this.listVisits = [];
       this.getData();
     },
   },
   methods: {
+    showList() {
+      this.listVisits = [];
+      this.getData();
+    },
     async getData() {
       let data = await getRestaurantVisits(this.restaurantId);
       data = data.items;

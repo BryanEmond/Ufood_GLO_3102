@@ -1,15 +1,19 @@
-import { ENDPOINT_UNSECURE } from "./endpoint";
+import { ENDPOINT } from "./endpoint";
 import Cookies from "js-cookie";
+const token = Cookies.get("token");
 
 export const getVisits = async () => {
   //must change for 3rd delivery, instead getLocalStorage
   const userId = Cookies.get("userId");
 
   const response = await fetch(
-    `${ENDPOINT_UNSECURE}/users/${userId}/restaurants/visits`,
+    `${ENDPOINT}/users/${userId}/restaurants/visits`,
     {
       method: "GET",
-      headers: { "Content-type": "application/json; charset=UTF-8" },
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: token,
+      },
     }
   );
   if (response.status != 200) {
@@ -26,10 +30,13 @@ export const getOneVisit = async (visitId) => {
   const userId = Cookies.get("userId");
 
   const response = await fetch(
-    `${ENDPOINT_UNSECURE}/users/${userId}/restaurants/visits/${visitId}`,
+    `${ENDPOINT}/users/${userId}/restaurants/visits/${visitId}`,
     {
       method: "GET",
-      headers: { "Content-type": "application/json; charset=UTF-8" },
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: token,
+      },
     }
   );
   if (response.status != 200) {
@@ -46,10 +53,13 @@ export const postVisit = async (restaurantId, comment, rating, date) => {
   const userId = Cookies.get("userId");
 
   const response = await fetch(
-    `${ENDPOINT_UNSECURE}/users/${userId}/restaurants/visits`,
+    `${ENDPOINT}/users/${userId}/restaurants/visits`,
     {
       method: "POST",
-      headers: { "Content-type": "application/json; charset=UTF-8" },
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: token,
+      },
       body: JSON.stringify({
         restaurant_id: restaurantId,
         comment: comment,
@@ -70,12 +80,14 @@ export const postVisit = async (restaurantId, comment, rating, date) => {
 export const getRestaurantVisits = async (restaurantId) => {
   //must change for 3rd delivery, instead getLocalStorage
   const userId = Cookies.get("userId");
-
   const response = await fetch(
-    `${ENDPOINT_UNSECURE}/users/${userId}/restaurants/${restaurantId}/visits`,
+    `${ENDPOINT}/users/${userId}/restaurants/${restaurantId}/visits`,
     {
       method: "GET",
-      headers: { "Content-type": "application/json; charset=UTF-8" },
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: token,
+      },
     }
   );
   if (response.status != 200) {

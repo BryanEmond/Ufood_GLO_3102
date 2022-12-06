@@ -27,7 +27,7 @@
             </tr>
           </tbody>
         </table>
-        <div class="flex-col">
+        <div v-if="this.connected" class="flex-col">
           <div v-if="favorite" class="p-2 ml-20">
             <button
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -51,6 +51,17 @@
             >
               View visit informations
             </button>
+          </div>
+        </div>
+        <div v-else>
+          <div class="p-2 ml-20">
+            <router-link to="/login">
+              <button
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Sign in to write a review
+              </button>
+            </router-link>
           </div>
         </div>
       </div>
@@ -152,7 +163,7 @@
     ></AddFavModalVue>
     <VisitModalViewVue
       :restaurantId="this.id"
-      :open="isOpen3"
+      :open="this.isOpen3"
       :closeCallback="closeModal"
     >
     </VisitModalViewVue>
@@ -177,6 +188,7 @@
 <script>
 import { getInfo } from "../api/restaurantsAPI.js";
 import * as favoritesAPI from "../api/favoritesAPI.js";
+import * as login from "../api/login.js";
 import { getRestaurantVisits } from "../api/visitsAPI.js";
 import { fetchGenresRestaurants, fetchVisitedRestaurants } from "../api/api";
 import VisitModalVue from "./VisitModal.vue";
@@ -186,7 +198,7 @@ import VisitModalViewVue from "./VisitModalView.vue";
 export default {
   data() {
     return {
-      id: "5f31fc6555d7790550c08aff",
+      id: "",
       userId: Cookies.get("userId"),
       maps: null,
       favorite: "true",
@@ -200,6 +212,7 @@ export default {
       rating: null,
       genres: [],
       location: {},
+      connected: false,
 
       suggestedRestaurants: null,
 
@@ -220,6 +233,15 @@ export default {
       this.favorite = true;
       favoritesAPI.removeFromList(listId, restaurantId);
     },
+    async isConnected() {
+      let value = Cookies.get("token");
+      if (value == undefined) {
+        this.connected = false;
+      } else {
+        this.connected = await login.checktoken(value);
+        console.log(this.connected);
+      }
+    },
     openModal() {
       this.isOpen = true;
     },
@@ -229,10 +251,17 @@ export default {
     openModal3() {
       this.isOpen3 = true;
     },
-    closeModal() {
+    async closeModal() {
       this.isOpen = false;
       this.isOpen2 = false;
       this.isOpen3 = false;
+      let listVisit = await getRestaurantVisits(this.id);
+      listVisit = listVisit.items;
+      if (Object.keys(listVisit).length === 0) {
+        this.display = false;
+      } else {
+        this.display = true;
+      }
     },
     async GetGenresRestaurants() {
       this.suggestedRestaurants = await fetchGenresRestaurants(this.genres[0]);
@@ -283,6 +312,7 @@ export default {
         this.display = false;
       }
       this.maps = `https://www.google.com/maps/embed/v1/place?key=${api}&q=place_id:${this.place_id}`;
+      this.isConnected();
     } catch (error) {
       console.log(error);
     }
