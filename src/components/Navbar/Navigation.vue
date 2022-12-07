@@ -92,6 +92,7 @@ export default {
   watch: {
     async $route(to, from) {
       this.token = await this.checkCookie(Cookies.get("token"));
+      this.userId = Cookies.get("userId");
       console.log(this.token);
     },
   },

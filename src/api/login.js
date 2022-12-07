@@ -70,3 +70,18 @@ export const checktoken = async (value) => {
     return false;
   }
 };
+export const getUserInfos = async (id) => {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`${ENDPOINT}/users/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    });
+    let json = await response.json();
+    return json;
+  } catch (e) {
+    console.log(e);
+  }
+};
