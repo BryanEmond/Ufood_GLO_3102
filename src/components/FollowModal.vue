@@ -90,18 +90,15 @@ export default {
   mounted() {
     this.listFollow = [];
     this.getFollowers();
-    console.log(this.listFollow);
   },
   watch: {
     followers: function (newVal, oldVal) {
       this.listFollow = [];
       this.getFollowers();
-      console.log(this.listFollow);
     },
     newfriend: function (newVal, oldVal) {
       this.listFollow = [];
       this.getFollowers();
-      console.log(this.listFollow);
     },
   },
   components: {
@@ -112,7 +109,6 @@ export default {
   methods: {
     async getFollowers() {
       let datas = await getUserInfos(this.userId);
-      console.log(datas.followers);
       if (this.followers) {
         this.listFollow = datas.followers;
       } else {

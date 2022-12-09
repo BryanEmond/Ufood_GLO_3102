@@ -2,6 +2,20 @@ import { ENDPOINT } from "./endpoint";
 import Cookies from "js-cookie";
 const token = Cookies.get("token");
 
+export const getVisitedFromUser = async (id) => {
+  const response = await fetch(`${ENDPOINT}/users/${id}/restaurants/visits`, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  });
+  if (response.status != 200) {
+    console.log(`Error occured with code ${response.status}`);
+    return null;
+  }
+  const data = await response.json();
+  return data.items;
+};
 export const getVisits = async () => {
   //must change for 3rd delivery, instead getLocalStorage
   const userId = Cookies.get("userId");
@@ -51,7 +65,6 @@ export const getOneVisit = async (visitId) => {
 export const postVisit = async (restaurantId, comment, rating, date) => {
   //must change for 3rd delivery, instead getLocalStorage
   const userId = Cookies.get("userId");
-
   const response = await fetch(
     `${ENDPOINT}/users/${userId}/restaurants/visits`,
     {

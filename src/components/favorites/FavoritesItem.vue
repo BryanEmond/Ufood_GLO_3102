@@ -9,7 +9,13 @@
     >
       View visit informations
     </button>
-    <button @click="removeRestaurant" class="text-red-600">X</button>
+    <button
+      v-if="this.isConnectedUser"
+      @click="removeRestaurant"
+      class="text-red-600"
+    >
+      X
+    </button>
     <VisitModalViewVue
       :restaurantId="restoId"
       :open="isOpen"
@@ -31,6 +37,7 @@ export default {
   props: {
     restoId: String,
     listId: String,
+    isConnectedUser: Boolean,
   },
   data() {
     return {
