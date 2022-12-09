@@ -32,7 +32,11 @@
                   :key="restaurant.id"
                   v-for="restaurant of list.restaurants"
                 >
-                  <FavoritesItem :restoId="restaurant.id" :listId="list.id" />
+                  <FavoritesItem
+                    :restoId="restaurant.id"
+                    :listId="list.id"
+                    :isConnectedUser="this.isConnectedUser"
+                  />
                 </div>
               </div>
             </div>

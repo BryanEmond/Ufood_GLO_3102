@@ -62,6 +62,27 @@
         </text>
       </svg>
       <div class="text-2xl font-bold pt-8">
+        {{ "Visited Restaurants" }}
+      </div>
+      <div class="flex flex-row flex-wrap content-start">
+        <router-link
+          :to="'/restaurant?id=' + items.restaurant_id"
+          :key="items"
+          v-for="items in visited"
+          class="p-4 mr-4 text-left rounded-3xl shadow mt-8 cursor-pointer w-44 h-32 hover:bg-slate-100"
+        >
+          <div class="flex flex-col h-full justify-around">
+            <div class="text-xl truncate font-bold">
+              {{ this.names[items.restaurant_id] }}
+            </div>
+            <div class="justify-self-end">
+              {{ items["comment"] }}
+              {{ items["rating"] }}
+            </div>
+          </div>
+        </router-link>
+      </div>
+      <div class="text-2xl font-bold pt-8">
         {{ this.isConnectedUser ? "My lists" : "Their lists" }}
       </div>
       <div v-if="isConnectedUser" class="flex-row mt-4">
@@ -104,6 +125,8 @@
 
 <script>
 import { createList, getListsFromUser } from "../api/favoritesAPI";
+import { getVisitedFromUser } from "../api/visitsAPI";
+import { getName } from "../api/restaurantsAPI";
 import FavoritesList from "./favorites/FavoritesList.vue";
 import FollowModal from "./FollowModal.vue";
 import { getUserInfos } from "../api/login";
@@ -114,6 +137,8 @@ export default {
   data() {
     return {
       favorites: [],
+      names: {},
+      visited: [],
       datas: [],
       username: "",
       email: "",
@@ -139,8 +164,12 @@ export default {
       let datas = await getUserInfos(this.userId);
       this.followers = datas.followers.length;
     },
-    async $route(to, from) {
+    userId: function (newVal, oldVal) {
       this.loadInfos();
+      this.fetchLists();
+      this.fetchVisited();
+      this.fetchName();
+      console.log(this.favorites);
     },
   },
   methods: {
@@ -167,26 +196,31 @@ export default {
     async fetchLists() {
       this.favorites = await getListsFromUser(this.userId);
     },
+    async fetchName() {
+      for (let items in this.visited) {
+        let id = this.visited[items].restaurant_id;
+        let datas = await getName(id);
+        this.names[id] = datas.name;
+      }
+    },
+    async fetchVisited() {
+      this.visited = await getVisitedFromUser(this.userId);
+      console.log(this.visited);
+    },
     async loadInfos() {
       this.userIdcheck = await Cookies.get("userId");
       let datas = await getUserInfos(this.userId);
-      console.log(datas);
       this.username = datas.name;
       this.email = datas.email;
       this.followed = this.checkFollow(datas);
       this.followers = datas.followers.length;
       this.following = datas.following.length;
-      console.log(this.followed);
-      console.log(
-        `computed data:\nuserId: ${this.userIdcheck}\nusername: ${this.username}\nemail: ${this.email}`
-      );
     },
     closeModal() {
       this.Open = false;
     },
     checkFollow(datas) {
       let followers = datas.followers;
-      console.log(followers);
       for (let i in followers) {
         if (followers[i]["id"] === this.userIdcheck) {
           return true;
@@ -196,9 +230,11 @@ export default {
     },
   },
   async beforeCreate() {
-    console.log(`userId: ${this.userId}`);
     this.favorites = await getListsFromUser(this.userId);
+    this.visited = await getVisitedFromUser(this.userId);
     await this.loadInfos();
+    console.log(this.visited);
+    this.fetchName();
     /* this.userId = await getUserId();
     console.log(`data:`);
     console.log(data); */

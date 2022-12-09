@@ -35,6 +35,14 @@ export default {
     listUpdated: Function,
     isConnectedUser: Boolean,
   },
+  watch: {
+    list: async function (newVal, oldVal) {
+      this.listUpdated();
+    },
+    $route(to, from) {
+      this.listUpdated();
+    },
+  },
   methods: {
     openModal() {
       this.isOpen = open;
