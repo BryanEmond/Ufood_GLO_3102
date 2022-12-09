@@ -47,8 +47,7 @@
           <div class="p-2 ml-20">
             <button
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onclick="location.href=`https://www.google.com/maps/dir/?api=1&destination=${this.name}&destination_place_id=${this.place_id}`"
-              type="button"
+              @click="this.googleMapLink"
             >
               Get directions
             </button>
@@ -264,6 +263,13 @@ export default {
           }
         }
       }
+    },
+    googleMapLink() {
+      let itineraryLink =
+        "https://www.google.com/maps/dir/?api=1&destination=" +
+        this.address.replace(/,/g, "%2C").replace(/ /g, "+");
+      itineraryLink += "&destination_place_id=" + this.place_id;
+      window.open(itineraryLink, "_blank");
     },
   },
   mounted: async function () {
