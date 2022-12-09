@@ -271,7 +271,7 @@ export default {
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
       this.id = urlParams.get("id");
-      let data = await script.getInfo(this.id);
+      let data = await getInfo(this.id);
       for (let i in data.opening_hours) {
         if (data.opening_hours[i] == null) {
           data.opening_hours[i] = "closed";

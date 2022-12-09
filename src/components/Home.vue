@@ -17,7 +17,7 @@
 </template>
 <script type="module">
 import HomeFoodCategories from "@/components/subcomponents/HomeFoodCategories";
-import HomeListingComponent from "@/components/subcomponents/HomeListingRestorants";
+import HomeListingComponent from "@/components/subcomponents/HomeListingRestaurants";
 import HomeMapListing from "@/components/subcomponents/HomeMapListing.vue";
 import MapWierdCategories from "./subcomponents/MapWierdCategories.vue";
 import VueToggle from "vue-toggle-component";
