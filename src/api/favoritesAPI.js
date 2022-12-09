@@ -1,4 +1,7 @@
 import { ENDPOINT_UNSECURE } from "./endpoint";
+import { ENDPOINT } from "./endpoint";
+import Cookies from "js-cookie";
+const token = Cookies.get("token");
 
 export const getAllFavorites = async () => {
   const response = await fetch(`${ENDPOINT_UNSECURE}/favorites`, {
@@ -27,9 +30,12 @@ export const getListsFromUser = async (id) => {
 };
 
 export const createList = async (name, owner) => {
-  const response = await fetch(`${ENDPOINT_UNSECURE}/favorites`, {
+  const response = await fetch(`${ENDPOINT}/favorites`, {
     method: "POST",
-    headers: { "Content-type": "application/json; charset=UTF-8" },
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+      Authorization: token,
+    },
     body: JSON.stringify({ name: name, owner: owner }),
   });
 
@@ -44,9 +50,12 @@ export const createList = async (name, owner) => {
 };
 
 export const renameList = async (newName, owner, listId) => {
-  const response = await fetch(`${ENDPOINT_UNSECURE}/favorites/${listId}`, {
+  const response = await fetch(`${ENDPOINT}/favorites/${listId}`, {
     method: "PUT",
-    headers: { "Content-type": "application/json; charset=UTF-8" },
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+      Authorization: token,
+    },
     body: JSON.stringify({ name: newName, owner: owner }),
   });
 
@@ -58,9 +67,12 @@ export const renameList = async (newName, owner, listId) => {
 };
 
 export const deleteList = async (listId) => {
-  const response = await fetch(`${ENDPOINT_UNSECURE}/favorites/${listId}`, {
+  const response = await fetch(`${ENDPOINT}/favorites/${listId}`, {
     method: "DELETE",
-    headers: { "Content-type": "application/json; charset=UTF-8" },
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+      Authorization: token,
+    },
   });
 
   if (response.status != 200) {
@@ -71,14 +83,14 @@ export const deleteList = async (listId) => {
 };
 
 export const addToList = async (listId, restaurantId) => {
-  const response = await fetch(
-    `${ENDPOINT_UNSECURE}/favorites/${listId}/restaurants`,
-    {
-      method: "POST",
-      headers: { "Content-type": "application/json; charset=UTF-8" },
-      body: JSON.stringify({ id: restaurantId }),
-    }
-  );
+  const response = await fetch(`${ENDPOINT}/favorites/${listId}/restaurants`, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+      Authorization: token,
+    },
+    body: JSON.stringify({ id: restaurantId }),
+  });
 
   if (response.status != 200) {
     console.log("Error while adding to list");
@@ -90,10 +102,13 @@ export const addToList = async (listId, restaurantId) => {
 
 export const removeFromList = async (listId, restaurantId) => {
   const response = await fetch(
-    `${ENDPOINT_UNSECURE}/favorites/${listId}/restaurants/${restaurantId}`,
+    `${ENDPOINT}/favorites/${listId}/restaurants/${restaurantId}`,
     {
       method: "DELETE",
-      headers: { "Content-type": "application/json; charset=UTF-8" },
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: token,
+      },
     }
   );
 

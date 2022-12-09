@@ -17,7 +17,7 @@ export default {
     return {
       location: null,
       restaurants: {},
-      uid: "636969b87bed3d6cd9563f4d",
+      uid: Cookies.get("userId"),
       routeParams: "",
       genresRestaurants: null,
       listVisited: null,
@@ -33,7 +33,7 @@ export default {
       this.isModalOpen = true;
     },
     closeModal() {
-      this.GetRestorants();
+      this.GetRestaurants();
       this.isModalVisitOpen = false;
       this.isModalOpen = false;
     },
@@ -75,7 +75,7 @@ export default {
         );
       }
     },
-    async GetRestorants() {
+    async GetRestaurants() {
       if (this.uid) {
         this.restaurants["Closest to you"] = await fetchClosestRestaurants(
           this.location.coords
@@ -173,7 +173,7 @@ export default {
     if (this.routeParams.genres) {
       this.GetGenresRestaurants();
     } else {
-      this.GetRestorants();
+      this.GetRestaurants();
     }
   },
   watch: {
@@ -182,7 +182,7 @@ export default {
       if (this.routeParams.genres) {
         this.GetGenresRestaurants();
       } else {
-        this.GetRestorants();
+        this.GetRestaurants();
       }
     },
   },

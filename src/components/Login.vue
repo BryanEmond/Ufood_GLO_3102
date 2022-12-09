@@ -48,7 +48,7 @@
             <div class="flex items-start"></div>
             <button
               type="submit"
-              class="w-full border-gray-300 text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              class="w-full bg-blue-400 border-gray-300 text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
             >
               Login
             </button>
@@ -84,6 +84,8 @@ export default {
       const req = await script.loginUser(this.email, this.password);
       console.log(req);
       Cookies.set("token", req.token);
+      const userId = await script.getUserId();
+      Cookies.set("userId", userId);
       console.log(Cookies.get("token"));
       this.$router.push("/");
     },

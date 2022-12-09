@@ -1,11 +1,7 @@
-async function getInfo(name) {
-  const resp = await fetch(
-    `https://ufoodapi.herokuapp.com/unsecure/restaurants/${name}`
-  );
+import { ENDPOINT_UNSECURE } from "./endpoint";
+
+export const getInfo = async (name) => {
+  const resp = await fetch(`${ENDPOINT_UNSECURE}/restaurants/${name}`);
   const data = await resp.json();
   return data;
-}
-
-module.exports = {
-  getInfo,
 };

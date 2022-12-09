@@ -70,8 +70,8 @@ import { ref, reactive, computed } from "vue";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import * as script from "../api/visitsAPI";
+import Cookies from "js-cookie";
 import { getListsFromUser, addToList } from "../api/favoritesAPI";
-import { DUMMY_USER_ID } from "../api/endpoint";
 
 export default {
   name: "VisitModal",
@@ -87,7 +87,7 @@ export default {
     };
   },
   beforeCreate: async function () {
-    let data = await getListsFromUser(DUMMY_USER_ID);
+    let data = await getListsFromUser(Cookies.get("userId"));
 
     for (let i in data) {
       this.listIds.push(data[i].id);

@@ -8,6 +8,7 @@ export const logout = async (token) => {
       method: "POST",
     });
     Cookies.remove("token");
+    Cookies.remove("userId");
     return response;
   } catch (e) {
     return e;
@@ -50,6 +51,12 @@ export const getTokenInfo = async (token) => {
     console.log(e);
   }
 };
+export const getUserId = async () => {
+  const token = Cookies.get("token");
+  const res = await getTokenInfo(token);
+  console.log(res);
+  return res.id;
+};
 export const checktoken = async (value) => {
   try {
     const response = await fetch(`${ENDPOINT}/tokenInfo`, {
@@ -61,5 +68,20 @@ export const checktoken = async (value) => {
     return true;
   } catch (e) {
     return false;
+  }
+};
+export const getUserInfos = async (id) => {
+  try {
+    const token = Cookies.get("token");
+    const response = await fetch(`${ENDPOINT}/users/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    });
+    let json = await response.json();
+    return json;
+  } catch (e) {
+    console.log(e);
   }
 };

@@ -1,12 +1,19 @@
-async function getVisits() {
+import { ENDPOINT } from "./endpoint";
+import Cookies from "js-cookie";
+const token = Cookies.get("token");
+
+export const getVisits = async () => {
   //must change for 3rd delivery, instead getLocalStorage
-  const userId = "636969b87bed3d6cd9563f4d";
+  const userId = Cookies.get("userId");
 
   const response = await fetch(
-    `https://ufoodapi.herokuapp.com/unsecure/users/${userId}/restaurants/visits`,
+    `${ENDPOINT}/users/${userId}/restaurants/visits`,
     {
       method: "GET",
-      headers: { "Content-type": "application/json; charset=UTF-8" },
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: token,
+      },
     }
   );
   if (response.status != 200) {
@@ -16,17 +23,20 @@ async function getVisits() {
   const data = await response.json();
 
   return data;
-}
+};
 
-async function getOneVisit(visitId) {
+export const getOneVisit = async (visitId) => {
   //must change for 3rd delivery, instead getLocalStorage
-  const userId = "636969b87bed3d6cd9563f4d";
+  const userId = Cookies.get("userId");
 
   const response = await fetch(
-    `https://ufoodapi.herokuapp.com/unsecure/users/${userId}/restaurants/visits/${visitId}`,
+    `${ENDPOINT}/users/${userId}/restaurants/visits/${visitId}`,
     {
       method: "GET",
-      headers: { "Content-type": "application/json; charset=UTF-8" },
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: token,
+      },
     }
   );
   if (response.status != 200) {
@@ -36,17 +46,20 @@ async function getOneVisit(visitId) {
   const data = await response.json();
 
   return data;
-}
+};
 
-async function postVisit(restaurantId, comment, rating, date) {
+export const postVisit = async (restaurantId, comment, rating, date) => {
   //must change for 3rd delivery, instead getLocalStorage
-  const userId = "636969b87bed3d6cd9563f4d";
+  const userId = Cookies.get("userId");
 
   const response = await fetch(
-    `https://ufoodapi.herokuapp.com/unsecure/users/${userId}/restaurants/visits`,
+    `${ENDPOINT}/users/${userId}/restaurants/visits`,
     {
       method: "POST",
-      headers: { "Content-type": "application/json; charset=UTF-8" },
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: token,
+      },
       body: JSON.stringify({
         restaurant_id: restaurantId,
         comment: comment,
@@ -62,17 +75,19 @@ async function postVisit(restaurantId, comment, rating, date) {
   const data = await response.json();
 
   return data;
-}
+};
 
-async function getRestaurantVisits(restaurantId) {
+export const getRestaurantVisits = async (restaurantId) => {
   //must change for 3rd delivery, instead getLocalStorage
-  const userId = "636969b87bed3d6cd9563f4d";
-
+  const userId = Cookies.get("userId");
   const response = await fetch(
-    `https://ufoodapi.herokuapp.com/unsecure/users/${userId}/restaurants/${restaurantId}/visits`,
+    `${ENDPOINT}/users/${userId}/restaurants/${restaurantId}/visits`,
     {
       method: "GET",
-      headers: { "Content-type": "application/json; charset=UTF-8" },
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: token,
+      },
     }
   );
   if (response.status != 200) {
@@ -82,12 +97,4 @@ async function getRestaurantVisits(restaurantId) {
   const data = await response.json();
 
   return data;
-}
-
-module.exports = {
-  getVisits,
-  getOneVisit,
-  postVisit,
-  getOneVisit,
-  getRestaurantVisits,
 };

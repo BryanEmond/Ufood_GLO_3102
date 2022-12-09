@@ -1,20 +1,19 @@
 import { getInfo } from "./restaurantsAPI";
-
-const URL = "https://ufoodapi.herokuapp.com";
+import { ENDPOINT_UNSECURE } from "./endpoint";
 
 export const fetchClosestRestaurants = async (position) => {
   // const fetchRestaurants = await fetch(
-  //   `${URL}/unsecure/restaurants?lon=${-71.297516}&lat=${46.780953}`
+  //   `${ENDPOINT_UNSECURE}/restaurants?lon=${-71.297516}&lat=${46.780953}`
   // );
   const fetchRestaurants = await fetch(
-    `${URL}/unsecure/restaurants?lon=${position.longitude}&lat=${position.latitude}`
+    `${ENDPOINT_UNSECURE}/restaurants?lon=${position.longitude}&lat=${position.latitude}`
   );
   const json = await fetchRestaurants.json();
   return json.items;
 };
 export const fetchFavoriteRestaurants = async (uid) => {
   const fetchRestaurants = await fetch(
-    `${URL}/unsecure/users/${uid}/favorites`
+    `${ENDPOINT_UNSECURE}/users/${uid}/favorites`
   );
   const json = await fetchRestaurants.json();
   let favList = [];
@@ -29,21 +28,21 @@ export const fetchFavoriteRestaurants = async (uid) => {
 };
 export const fetchByRangePriceRestaurants = async (range) => {
   const fetchRestaurants = await fetch(
-    `${URL}/unsecure/restaurants?price_range=${range}`
+    `${ENDPOINT_UNSECURE}/restaurants?price_range=${range}`
   );
   const json = await fetchRestaurants.json();
   return json.items;
 };
 export const fetchGenresRestaurants = async (cat) => {
   const fetchRestaurants = await fetch(
-    `${URL}/unsecure/restaurants?genres=${cat}`
+    `${ENDPOINT_UNSECURE}/restaurants?genres=${cat}`
   );
   const json = await fetchRestaurants.json();
   return json.items;
 };
 export const fetchVisitedRestaurants = async (uid) => {
   const fetchRestaurants = await fetch(
-    `${URL}/unsecure/users/${uid}/restaurants/visits`
+    `${ENDPOINT_UNSECURE}/users/${uid}/restaurants/visits`
   );
   const json = await fetchRestaurants.json();
   return json.items;
