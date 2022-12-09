@@ -44,6 +44,15 @@
               Write a review
             </button>
           </div>
+          <div class="p-2 ml-20">
+            <button
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onclick="location.href=`https://www.google.com/maps/dir/?api=1&destination=${this.name}&destination_place_id=${this.place_id}`"
+              type="button"
+            >
+              Get directions
+            </button>
+          </div>
           <div v-if="this.display" class="p-2 ml-20">
             <button
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -67,19 +76,10 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 shadow-lg">
-      <div
-        class="flex map-responsive h-full object-cover rounded-xl border-2 border-gray-300"
-      >
-        <iframe
-          :src="this.maps"
-          width="1200"
-          height="1200"
-          frameborder="0"
-          style="border: 0"
-          allowfullscreen
-        ></iframe>
-      </div>
+    <div
+      class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 shadow-lg align-middle"
+    >
+      <div id="mapid" class="border-2 border-gray-300 rounded-xl h-60"></div>
       <div
         class="flex border-2 border-gray-300 rounded-xl p-6 object-cover"
         v-for="image in this.pictures"
@@ -170,20 +170,7 @@
   </div>
 </template>
 
-<style>
-.map-responsive {
-  overflow: hidden;
-  padding-bottom: 56.25%;
-  position: relative;
-  height: 0;
-}
-
-.map-responsive iframe {
-  left: 0;
-  top: 0;
-  position: absolute;
-}
-</style>
+<style></style>
 
 <script>
 import { getInfo } from "../api/restaurantsAPI.js";
@@ -195,6 +182,7 @@ import VisitModalVue from "./VisitModal.vue";
 import AddFavModalVue from "./AddFavModal.vue";
 import Cookies from "js-cookie";
 import VisitModalViewVue from "./VisitModalView.vue";
+import leaflet from "leaflet";
 export default {
   data() {
     return {
@@ -300,8 +288,6 @@ export default {
       this.rating = data.rating;
       this.genres = data.genres;
       this.location = data.location;
-      let lat = this.location.coordinates[0].toFixed(6);
-      let long = this.location.coordinates[1].toFixed(6);
       const api = "AIzaSyALLxzCl392yKm0znSBrut-kg8N6zT0T30";
       await this.GetGenresRestaurants();
       console.log(this.suggestedRestaurants);
@@ -311,7 +297,24 @@ export default {
       if (Object.keys(listVisit).length === 0) {
         this.display = false;
       }
-      this.maps = `https://www.google.com/maps/embed/v1/place?key=${api}&q=place_id:${this.place_id}`;
+      let map = leaflet.map("mapid").setView(
+        {
+          lon: data.location.coordinates[0],
+          lat: data.location.coordinates[1],
+        },
+        13
+      );
+      leaflet
+        .tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 20,
+          attribution:
+            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        })
+        .addTo(map);
+      let marker = leaflet
+        .marker([data.location.coordinates[1], data.location.coordinates[0]])
+        .addTo(map);
+      marker.bindPopup(this.name);
       this.isConnected();
     } catch (error) {
       console.log(error);

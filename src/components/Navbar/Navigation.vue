@@ -113,9 +113,7 @@ export default {
       this.hamburgerIsDisplay = value;
       return;
     },
-    displayHamburgerMenu: function () {
-      console.log(HamburgerMenu.data().isDisplay);
-    },
+    displayHamburgerMenu: function () {},
   },
 };
 </script>
