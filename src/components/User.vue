@@ -1,19 +1,53 @@
 <template>
   <div class="md:flex justify-between">
-    <div class="p-7 rounded-3xl shadow-md ml-9 h-auto w-11/12 md:w-4/12">
-      <div class="profile-picture">
-        <img
-          class="rounded-full shadow-md"
-          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-        />
-      </div>
+    <div class="ml-9 h-auto w-11/12 md:w-4/12">
+      <div class="p-7 rounded-3xl shadow-md">
+        <div class="profile-picture">
+          <img
+            class="rounded-full shadow-md"
+            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+          />
+        </div>
 
-      <div class="flex flex-col text-center h-45">
-        <a class="mt-8 md:mt-12 font-bold">{{ this.username }}</a>
-        <a class="mt-8 md:mt-12 font-bold">{{ this.email }}</a>
-        <!-- <a class="mt-8 md:mt-12 font-bold">University of Laval</a> -->
+        <div class="flex flex-col text-center h-45">
+          <a class="mt-8 md:mt-12 font-bold">{{ this.username }}</a>
+          <a class="mt-8 md:mt-12 font-bold">{{ this.email }}</a>
+          <!-- <a class="mt-8 md:mt-12 font-bold">University of Laval</a> -->
+        </div>
+      </div>
+      <div v-if="!this.isConnectedUser" class="ml-2 w-11/12">
+        <button
+          v-if="!this.followed"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold p-7 rounded-3xl mt-7 mb-7 shadow-md w-full"
+          @click="this.Follow"
+        >
+          Follow
+        </button>
+        <button
+          v-else
+          class="bg-red-500 hover:bg-red-700 text-white font-bold p-7 rounded-3xl mt-7 mb-7 shadow-md w-full"
+          @click="this.Unfollow"
+        >
+          Unfollow
+        </button>
+      </div>
+      <div class="flex">
+        <button
+          class="hover:bg-gray-300 rounded-xl p-7 mt-7 mb-7 shadow-md w-5/12"
+          @click="this.openModal1"
+        >
+          followers {{ this.followers }}
+        </button>
+        <button
+          class="hover:bg-gray-300 rounded-xl p-7 mt-7 mb-7 ml-7 shadow-md w-5/12"
+          @click="this.openModal2"
+        >
+          following {{ this.following }}
+        </button>
       </div>
     </div>
+
+    <div></div>
     <div class="ml-8 w-11/12">
       <svg class="p-7 text-center rounded-3xl w-full shadow">
         <text y="10%" font-weight="bold">User Rating</text>
@@ -57,13 +91,23 @@
         ></FavoritesList>
       </div>
     </div>
+    <FollowModal
+      :open="this.Open"
+      :closeCallback="this.closeModal"
+      :followers="this.choice"
+      :userId="this.userId"
+      :newfriend="this.followed"
+    >
+    </FollowModal>
   </div>
 </template>
 
 <script>
 import { createList, getListsFromUser } from "../api/favoritesAPI";
 import FavoritesList from "./favorites/FavoritesList.vue";
-import { getTokenInfo, getUserInfos } from "../api/login";
+import FollowModal from "./FollowModal.vue";
+import { getUserInfos } from "../api/login";
+import { followUser, unfollowUser } from "../api/follow.js";
 import Cookies from "js-cookie";
 
 export default {
@@ -74,6 +118,11 @@ export default {
       username: "",
       email: "",
       userIdcheck: "",
+      followed: true,
+      followers: 0,
+      following: 0,
+      Open: false,
+      choice: "",
     };
   },
   computed: {
@@ -85,9 +134,34 @@ export default {
   props: {
     userId: String,
   },
+  watch: {
+    followed: async function (newVal, oldVal) {
+      let datas = await getUserInfos(this.userId);
+      this.followers = datas.followers.length;
+    },
+    async $route(to, from) {
+      this.loadInfos();
+    },
+  },
   methods: {
+    openModal1() {
+      this.Open = true;
+      this.choice = true;
+    },
+    openModal2() {
+      this.Open = true;
+      this.choice = false;
+    },
+    async Follow() {
+      this.followed = await followUser(this.userId);
+      this.followed = true;
+    },
+    async Unfollow() {
+      this.followed = await unfollowUser(this.userId);
+      this.followed = false;
+    },
     async createList() {
-      await createList(this.newListName, "equipe8@email.com");
+      await createList(this.newListName, this.email);
       this.fetchLists();
     },
     async fetchLists() {
@@ -99,9 +173,26 @@ export default {
       console.log(datas);
       this.username = datas.name;
       this.email = datas.email;
+      this.followed = this.checkFollow(datas);
+      this.followers = datas.followers.length;
+      this.following = datas.following.length;
+      console.log(this.followed);
       console.log(
         `computed data:\nuserId: ${this.userIdcheck}\nusername: ${this.username}\nemail: ${this.email}`
       );
+    },
+    closeModal() {
+      this.Open = false;
+    },
+    checkFollow(datas) {
+      let followers = datas.followers;
+      console.log(followers);
+      for (let i in followers) {
+        if (followers[i]["id"] === this.userIdcheck) {
+          return true;
+        }
+      }
+      return false;
     },
   },
   async beforeCreate() {
@@ -112,7 +203,7 @@ export default {
     console.log(`data:`);
     console.log(data); */
   },
-  components: { FavoritesList },
+  components: { FavoritesList, FollowModal },
 };
 </script>
 

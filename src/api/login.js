@@ -22,7 +22,14 @@ export const createUser = async (name, email, password) => {
     },
     body: `name=${name}&email=${email}&password=${password}`,
   });
-  const json = await response.json();
+  const response2 = await fetch(`${ENDPOINT}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: `email=${email}&password=${password}`,
+  });
+  const json = await response2.json();
   return json;
 };
 export const loginUser = async (email, password) => {
