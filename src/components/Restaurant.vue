@@ -252,15 +252,14 @@ export default {
       this.isOpen = false;
       this.isOpen2 = false;
       this.isOpen3 = false;
-      let listVisit = [];
       if (this.connected) {
         let listVisit = await getRestaurantVisits(this.id);
         listVisit = listVisit.items;
-      }
-      if (Object.keys(listVisit).length === 0) {
-        this.display = false;
-      } else {
-        this.display = true;
+        if (Object.keys(listVisit).length === 0) {
+          this.display = false;
+        } else {
+          this.display = true;
+        }
       }
     },
     async GetGenresRestaurants() {
