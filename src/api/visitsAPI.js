@@ -9,10 +9,6 @@ export const getVisitedFromUser = async (id) => {
       Authorization: token,
     },
   });
-  if (response.status != 200) {
-    console.log(`Error occured with code ${response.status}`);
-    return null;
-  }
   const data = await response.json();
   return data.items;
 };
