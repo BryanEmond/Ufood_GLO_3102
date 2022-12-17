@@ -97,6 +97,7 @@ export default {
     isOpen: Boolean,
     closeCallback: Function,
     restaurantId: String,
+    connected: Boolean,
   },
   setup() {
     const form = reactive({

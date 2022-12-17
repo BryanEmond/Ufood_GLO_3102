@@ -70,6 +70,14 @@
                 Sign in to write a review
               </button>
             </router-link>
+            <div class="p-2 ml-20">
+              <button
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                @click="this.googleMapLink"
+              >
+                Get directions
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -154,6 +162,7 @@
       :open="isOpen"
       :closeCallback="closeModal"
       :restaurantId="this.tmpRestaurantId"
+      :connected="this.connected"
     ></VisitModalVue>
     <AddFavModalVue
       :open="isOpen2"
@@ -164,6 +173,7 @@
       :restaurantId="this.id"
       :open="this.isOpen3"
       :closeCallback="closeModal"
+      :connected="this.connected"
     >
     </VisitModalViewVue>
   </div>
@@ -242,8 +252,11 @@ export default {
       this.isOpen = false;
       this.isOpen2 = false;
       this.isOpen3 = false;
-      let listVisit = await getRestaurantVisits(this.id);
-      listVisit = listVisit.items;
+      let listVisit = [];
+      if (this.connected) {
+        let listVisit = await getRestaurantVisits(this.id);
+        listVisit = listVisit.items;
+      }
       if (Object.keys(listVisit).length === 0) {
         this.display = false;
       } else {
@@ -252,14 +265,16 @@ export default {
     },
     async GetGenresRestaurants() {
       this.suggestedRestaurants = await fetchGenresRestaurants(this.genres[0]);
-      this.listVisited = await fetchVisitedRestaurants(Cookies.get("userId"));
-      for (let visit of this.listVisited) {
-        for (let rest of this.suggestedRestaurants) {
-          if (rest.id === visit.restaurant_id) {
-            rest.visited = true;
-          }
-          if (rest.name === this.name) {
-            this.suggestedRestaurants.pop();
+      if (this.connected) {
+        this.listVisited = await fetchVisitedRestaurants(Cookies.get("userId"));
+        for (let visit of this.listVisited) {
+          for (let rest of this.suggestedRestaurants) {
+            if (rest.id === visit.restaurant_id) {
+              rest.visited = true;
+            }
+            if (rest.name === this.name) {
+              this.suggestedRestaurants.pop();
+            }
           }
         }
       }
@@ -273,57 +288,55 @@ export default {
     },
   },
   mounted: async function () {
-    try {
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      this.id = urlParams.get("id");
-      let data = await getInfo(this.id);
-      for (let i in data.opening_hours) {
-        if (data.opening_hours[i] == null) {
-          data.opening_hours[i] = "closed";
-        }
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    this.id = urlParams.get("id");
+    let data = await getInfo(this.id);
+    for (let i in data.opening_hours) {
+      if (data.opening_hours[i] == null) {
+        data.opening_hours[i] = "closed";
       }
-      this.tmpRestaurantId = this.id;
-      this.opening_hours = data.opening_hours;
-      this.pictures = data.pictures;
-      this.name = data.name;
-      this.place_id = data.place_id;
-      this.tel = data.tel;
-      this.address = data.address;
-      this.price_range = data.price_range;
-      this.rating = data.rating;
-      this.genres = data.genres;
-      this.location = data.location;
-      const api = "AIzaSyALLxzCl392yKm0znSBrut-kg8N6zT0T30";
-      await this.GetGenresRestaurants();
-      console.log(this.suggestedRestaurants);
-
+    }
+    this.tmpRestaurantId = this.id;
+    this.opening_hours = data.opening_hours;
+    this.pictures = data.pictures;
+    this.name = data.name;
+    this.place_id = data.place_id;
+    this.tel = data.tel;
+    this.address = data.address;
+    this.price_range = data.price_range;
+    this.rating = data.rating;
+    this.genres = data.genres;
+    this.location = data.location;
+    this.isConnected();
+    const api = "AIzaSyALLxzCl392yKm0znSBrut-kg8N6zT0T30";
+    await this.GetGenresRestaurants();
+    console.log(this.suggestedRestaurants);
+    let map = leaflet.map("mapid").setView(
+      {
+        lon: data.location.coordinates[0],
+        lat: data.location.coordinates[1],
+      },
+      13
+    );
+    leaflet
+      .tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 20,
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      })
+      .addTo(map);
+    let marker = leaflet
+      .marker([data.location.coordinates[1], data.location.coordinates[0]])
+      .addTo(map);
+    marker.bindPopup(this.name);
+    console.log(this.connected);
+    if (this.connected) {
       let listVisit = await getRestaurantVisits(this.id);
       listVisit = listVisit.items;
       if (Object.keys(listVisit).length === 0) {
         this.display = false;
       }
-      let map = leaflet.map("mapid").setView(
-        {
-          lon: data.location.coordinates[0],
-          lat: data.location.coordinates[1],
-        },
-        13
-      );
-      leaflet
-        .tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-          maxZoom: 20,
-          attribution:
-            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        })
-        .addTo(map);
-      let marker = leaflet
-        .marker([data.location.coordinates[1], data.location.coordinates[0]])
-        .addTo(map);
-      marker.bindPopup(this.name);
-      this.isConnected();
-    } catch (error) {
-      console.log(error);
     }
   },
   computed: {

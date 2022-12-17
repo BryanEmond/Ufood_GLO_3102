@@ -91,6 +91,8 @@ export default {
   },
   watch: {
     async $route(to, from) {
+      console.log("route changed");
+      console.log(Cookies.get("token"));
       this.token = await this.checkCookie(Cookies.get("token"));
       this.userId = Cookies.get("userId");
       console.log(this.token);
@@ -106,7 +108,13 @@ export default {
       if (value == undefined) {
         return false;
       } else {
-        return await login.checktoken(value);
+        let val = await login.checktoken(value);
+        if (val == false) {
+          Cookies.remove("token");
+          Cookies.remove("userId");
+          return false;
+        }
+        return val;
       }
     },
     closeSideMenu(value) {

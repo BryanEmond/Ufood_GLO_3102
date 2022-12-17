@@ -27,6 +27,7 @@ import { ref } from "vue";
 export default {
   data() {
     return {
+      url: false,
       isOpen: ref(false),
     };
   },
@@ -36,11 +37,15 @@ export default {
     isConnectedUser: Boolean,
   },
   watch: {
-    list: async function (newVal, oldVal) {
-      this.listUpdated();
+    list: function (newVal, oldVal) {
+      if (!this.url) {
+        this.listUpdated();
+      }
     },
     $route(to, from) {
+      this.url = true;
       this.listUpdated();
+      this.url = false;
     },
   },
   methods: {

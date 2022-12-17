@@ -69,6 +69,7 @@ export default {
     open: Boolean,
     closeCallback: Function,
     restaurantId: String,
+    connected: Boolean,
   },
   data() {
     return {
@@ -97,24 +98,26 @@ export default {
       this.getData();
     },
     async getData() {
-      let data = await getRestaurantVisits(this.restaurantId);
-      data = data.items;
-      // if (data.length <= 3) {
-      //   this.listVisits = data;
-      // } else {
-      //   data.slice(-3);
-      // }
-      // console.log(data);
-      this.listVisits = data;
+      if (this.connected) {
+        let data = await getRestaurantVisits(this.restaurantId);
+        data = data.items;
+        // if (data.length <= 3) {
+        //   this.listVisits = data;
+        // } else {
+        //   data.slice(-3);
+        // }
+        // console.log(data);
+        this.listVisits = data;
 
-      // if (data.length <= 3) {
-      //   this.listVisits = data;
-      // } else {
-      //   for (let i = data.length - 3; i < data.length; i++) {
-      //     console.log(i);
-      //     this.listVisits.push(data[-i]);
-      //   }
-      // }
+        // if (data.length <= 3) {
+        //   this.listVisits = data;
+        // } else {
+        //   for (let i = data.length - 3; i < data.length; i++) {
+        //     console.log(i);
+        //     this.listVisits.push(data[-i]);
+        //   }
+        // }
+      }
     },
   },
   components: {

@@ -87,8 +87,8 @@
       </div>
       <div v-if="isConnectedUser" class="flex-row mt-4">
         <input
-          :bind="newListName"
-          v-model="newListName"
+          :bind="this.newListName"
+          v-model="this.newListName"
           placeholder="Enter name ..."
           class="form-control px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
         />
@@ -136,6 +136,7 @@ import Cookies from "js-cookie";
 export default {
   data() {
     return {
+      newListName: "",
       favorites: [],
       names: {},
       visited: [],
@@ -166,7 +167,6 @@ export default {
     },
     userId: function (newVal, oldVal) {
       this.loadInfos();
-      this.fetchLists();
       this.fetchVisited();
       this.fetchName();
       console.log(this.favorites);
