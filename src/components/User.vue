@@ -1,14 +1,10 @@
 <template>
   <div class="md:flex justify-between">
     <div class="ml-9 h-auto w-11/12 md:w-4/12">
-      <div class="p-7 rounded-3xl shadow-md">
-        <div class="profile-picture">
-          <img
-            class="rounded-full shadow-md"
-            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-          />
+      <div class="p-7 mr-7 rounded-3xl shadow-md">
+        <div class="flex justify-center profile-picture">
+          <img v-bind:src="this.avatarURL" class="rounded-full shadow-md" />
         </div>
-
         <div class="flex flex-col text-center h-45">
           <a class="mt-8 md:mt-12 font-bold">{{ this.username }}</a>
           <a class="mt-8 md:mt-12 font-bold">{{ this.email }}</a>
@@ -132,6 +128,7 @@ import FollowModal from "./FollowModal.vue";
 import { getUserInfos } from "../api/login";
 import { followUser, unfollowUser } from "../api/follow.js";
 import Cookies from "js-cookie";
+import CryptoJS from "crypto-js";
 
 export default {
   data() {
@@ -149,6 +146,7 @@ export default {
       following: 0,
       Open: false,
       choice: "",
+      avatarURL: "",
     };
   },
   computed: {
@@ -235,6 +233,11 @@ export default {
     await this.loadInfos();
     console.log(this.visited);
     this.fetchName();
+    this.avatarURL =
+      "https://www.gravatar.com/avatar/" +
+      CryptoJS.MD5(this.email.trim().toLowerCase()) +
+      "?d=identicon&s=200";
+    console.log(this.avatarURL);
     /* this.userId = await getUserId();
     console.log(`data:`);
     console.log(data); */
