@@ -1,11 +1,17 @@
 import { ENDPOINT_UNSECURE } from "./endpoint";
+import { ENDPOINT } from "./endpoint";
+import Cookies from "js-cookie";
+const token = Cookies.get("token");
 
 export const getUsers = async (query = "") => {
-  const url = new URL(`${ENDPOINT_UNSECURE}/users`);
+  const url = new URL(`${ENDPOINT}/users`);
   url.searchParams.append("q", query);
 
   const response = await fetch(url, {
     method: "GET",
+    headers: {
+      Authorization: token,
+    },
   });
 
   const data = await response.json();
@@ -13,8 +19,11 @@ export const getUsers = async (query = "") => {
 };
 
 export const getUserById = async (id) => {
-  const response = await fetch(`${ENDPOINT_UNSECURE}/users/${id}`, {
+  const response = await fetch(`${ENDPOINT}/users/${id}`, {
     method: "GET",
+    headers: {
+      Authorization: token,
+    },
   });
 
   const data = await response.json();

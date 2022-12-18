@@ -11,7 +11,7 @@ export const getName = async (id) => {
   const resp = await fetch(`${ENDPOINT}/restaurants/${id}`, {
     method: "GET",
     headers: {
-      Authorization: token,
+      authorization: token,
     },
   });
   if (resp.status != 200) {

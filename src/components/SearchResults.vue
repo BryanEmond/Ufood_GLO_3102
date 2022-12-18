@@ -5,7 +5,7 @@
       <div v-show="!this.userIsConnected">
         You must be signed in to search users
       </div>
-      <div v-show="this.userResults.length === 0">
+      <div v-show="this.userIsConnected && this.userResults.length === 0">
         No user found mathing with your query
       </div>
       <div v-show="this.userIsConnected" class="flex flex-row flex-wrap">
@@ -97,7 +97,10 @@ export default {
       "$route.query.query",
       async function (newQuery, oldQuery) {
         this.query = newQuery;
-        this.userResults = await getUsers(this.query);
+
+        if (this.userIsConnected) {
+          this.userResults = await getUsers(this.query);
+        }
 
         let position = await getCoords();
 

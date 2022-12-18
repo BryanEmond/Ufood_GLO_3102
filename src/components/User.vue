@@ -154,7 +154,7 @@ export default {
   computed: {
     isConnectedUser() {
       console.log(`${this.userId} === ${this.userIdcheck}`);
-      return this.userId === this.userIdcheck; //TODO : compare with the real user id obtained from the API
+      return this.userId === this.userIdcheck;
     },
   },
   props: {

@@ -34,9 +34,9 @@ export const createList = async (name, owner) => {
     method: "POST",
     headers: {
       "Content-type": "application/json; charset=UTF-8",
-      Authorization: token,
+      authorization: token,
     },
-    body: JSON.stringify({ name: name, owner: owner }),
+    body: JSON.stringify({ name: name }),
   });
 
   if (response.status != 201) {
@@ -54,9 +54,9 @@ export const renameList = async (newName, owner, listId) => {
     method: "PUT",
     headers: {
       "Content-type": "application/json; charset=UTF-8",
-      Authorization: token,
+      authorization: token,
     },
-    body: JSON.stringify({ name: newName, owner: owner }),
+    body: JSON.stringify({ name: newName }),
   });
 
   if (response.status != 200) {
@@ -71,7 +71,7 @@ export const deleteList = async (listId) => {
     method: "DELETE",
     headers: {
       "Content-type": "application/json; charset=UTF-8",
-      Authorization: token,
+      authorization: token,
     },
   });
 
@@ -87,7 +87,7 @@ export const addToList = async (listId, restaurantId) => {
     method: "POST",
     headers: {
       "Content-type": "application/json; charset=UTF-8",
-      Authorization: token,
+      authorization: token,
     },
     body: JSON.stringify({ id: restaurantId }),
   });
@@ -107,7 +107,7 @@ export const removeFromList = async (listId, restaurantId) => {
       method: "DELETE",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
-        Authorization: token,
+        authorization: token,
       },
     }
   );
