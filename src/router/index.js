@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/components/Home";
 import Restaurant from "@/components/Restaurant";
 import User from "@/components/User";
+import SearchResults from "@/components/SearchResults";
 
 const routes = [
   {
@@ -29,6 +30,12 @@ const routes = [
     path: "/register",
     name: "Register",
     component: () => import("@/components/Register"),
+  },
+  {
+    path: "/search",
+    name: "Search",
+    component: SearchResults,
+    props: true,
   },
 ];
 

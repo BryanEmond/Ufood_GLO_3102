@@ -21,3 +21,12 @@ export const getName = async (id) => {
   const data = await resp.json();
   return data;
 };
+
+export const searchClosestRestaurants = async (query, lon, lat) => {
+  const fetchRestaurants = await fetch(
+    `${ENDPOINT_UNSECURE}/restaurants?lon=${lon}&lat=${lat}&q=${query}`
+  );
+  const json = await fetchRestaurants.json();
+
+  return json.items;
+};
