@@ -6,7 +6,7 @@ export const getVisitedFromUser = async (id) => {
   const response = await fetch(`${ENDPOINT}/users/${id}/restaurants/visits`, {
     method: "GET",
     headers: {
-      Authorization: token,
+      authorization: token,
     },
   });
   const data = await response.json();
@@ -22,7 +22,7 @@ export const getVisits = async () => {
       method: "GET",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
-        Authorization: token,
+        authorization: token,
       },
     }
   );
@@ -45,7 +45,7 @@ export const getOneVisit = async (visitId) => {
       method: "GET",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
-        Authorization: token,
+        authorization: token,
       },
     }
   );
@@ -95,7 +95,7 @@ export const getRestaurantVisits = async (restaurantId) => {
       method: "GET",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
-        Authorization: token,
+        authorization: token,
       },
     }
   );
